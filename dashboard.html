@@ -1,19 +1,23 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Dashboard</title>
-    <link rel="stylesheet" href="stylesdash.css">
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Job Tracker Portal</title>
+
+  <!-- Firebase SDKs -->
+  <link rel="stylesheet" href="styles.css">
 </head>
 <body>
-    <h2>Welcome to the Job Tracker Dashboard</h2>
-    <div class="dashboard-container">
-        <button id="logout-btn">Logout</button>
-        <h3>Job List</h3>
-        <ul class="job-list" id="job-list"></ul>
-    </div>
+  <div class="login-container">
+    <h2>Job Tracker Portal</h2>
+    <button id="google-signin-btn">Sign in with Google</button>
+    <p id="user-info"></p>
+    <button id="signout-btn" style="display:none;">Sign Out</button>
+    <p id="error-message" style="color:red;"></p>
+  </div>
 
-    <script src="jobsapi.js"></script>
+  <!-- Firebase JS SDK -->
+  <script type="module" src="script.js"></script>
 </body>
 </html>
