@@ -31,7 +31,7 @@ if (signInButton) {
       .then((result) => {
         const user = result.user;
         localStorage.setItem("user", JSON.stringify(user)); // Store user info
-        window.location.href = "dashboard.html"; // Redirect to dashboard after login
+        // window.location.href = "dashboard.html"; // Redirect to dashboard after login
       })
       .catch((error) => {
         errorMessage.textContent = `Error: ${error.message}`;
