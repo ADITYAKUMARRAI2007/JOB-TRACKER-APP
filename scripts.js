@@ -19,51 +19,58 @@ const auth = getAuth(app);
 const provider = new GoogleAuthProvider();
 
 // DOM Elements
-const signInButton = document.getElementById('google-signin-btn');
-const signOutButton = document.getElementById('signout-btn');
-const userInfoDisplay = document.getElementById('user-info');
-const errorMessage = document.getElementById('error-message');
+const signInButton = document.getElementById("google-signin-btn");
+const signOutButton = document.getElementById("signout-btn");
+const userInfoDisplay = document.getElementById("user-info");
+const errorMessage = document.getElementById("error-message");
 
-// Sign-in event
-signInButton.addEventListener('click', () => {
-  signInWithPopup(auth, provider)
-    .then((result) => {
-      const user = result.user;
-      userInfoDisplay.innerHTML = `Welcome, ${user.displayName}!`;
-      signInButton.style.display = 'none';
-      signOutButton.style.display = 'block';
-      errorMessage.textContent = '';
-       // window.location.href = "dashboard.html"
-    })
-    .catch((error) => {
-      errorMessage.textContent = `Error: ${error.message}`;
-    });
-});
+// ✅ Sign-in event
+if (signInButton) {
+  signInButton.addEventListener("click", () => {
+    signInWithPopup(auth, provider)
+      .then((result) => {
+        const user = result.user;
+        localStorage.setItem("user", JSON.stringify(user)); // Store user info
+        window.location.href = "dashboard.html"; // Redirect to dashboard after login
+      })
+      .catch((error) => {
+        errorMessage.textContent = `Error: ${error.message}`;
+      });
+  });
+}
 
-// Sign-out event
-// signOutButton.addEventListener('click', () => {
-//   signOut(auth)
-//     .then(() => {
-//       userInfoDisplay.innerHTML = '';
-//       signInButton.style.display = 'block';
-//       signOutButton.style.display = 'none';
-//       errorMessage.textContent = '';
-//     })
-//     .catch((error) => {
-//       errorMessage.textContent = `Error: ${error.message}`;
-//     });
-// });
+// ✅ Sign-out event
+if (signOutButton) {
+  signOutButton.addEventListener("click", () => {
+    signOut(auth)
+      .then(() => {
+        localStorage.removeItem("user"); // Remove user data
+        window.location.href = "index.html"; // Redirect to login page
+      })
+      .catch((error) => {
+        errorMessage.textContent = `Error: ${error.message}`;
+      });
+  });
+}
 
-// Monitor auth state
+// ✅ Monitor authentication state
 onAuthStateChanged(auth, (user) => {
   if (user) {
-    userInfoDisplay.innerHTML = `Welcome, ${user.displayName}!`;
-    signInButton.style.display = 'none';
-    signOutButton.style.display = 'block';
-    window.location.href = "dashboard.html"
+    localStorage.setItem("user", JSON.stringify(user)); // Save user data
+    if (userInfoDisplay) {
+      userInfoDisplay.innerHTML = `Welcome, ${user.displayName}!`;
+    }
+    
+    // Only redirect to dashboard if on login page
+    if (window.location.pathname.includes("index.html")) {
+      window.location.href = "dashboard.html";
+    }
   } else {
-    userInfoDisplay.innerHTML = '';
-    signInButton.style.display = 'block';
-    signOutButton.style.display = 'none';
+    localStorage.removeItem("user"); // Clear user data
+
+    // If not logged in and on dashboard, redirect to login
+    if (window.location.pathname.includes("dashboard.html")) {
+      window.location.href = "index.html";
+    }
   }
 });
