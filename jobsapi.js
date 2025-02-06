@@ -21,12 +21,11 @@ async function fetchJobs() {
         const response = await fetch("https://api.apijobs.dev/v1/job/search", {
             method: "POST",
             headers: {
-                "apikey": API_KEY,  // Correct API key
-                "Content-Type": "application/json" // Set content type to JSON
+                "apikey": API_KEY,  // Ensure this is exactly how the API expects it
+                "Content-Type": "application/json"
             },
             body: JSON.stringify({
-                "q": "fullstack",  // Search query for jobs
-                "employmentType": "FULL_TIME" // You can add more filters as needed
+                "q": "fullstack" // Simplified for now
             }),
         });
 
@@ -40,8 +39,8 @@ async function fetchJobs() {
         const jobList = document.getElementById("job-list");
         jobList.innerHTML = ""; // Clear previous job listings
 
-        if (data.jobs && data.jobs.length > 0) {  // Update this based on the response format
-            data.jobs.forEach(job => {
+        if (data.hits && data.hits.length > 0) {
+            data.hits.forEach(job => {
                 const li = document.createElement("li");
                 li.innerHTML = `
                     <strong>${job.title}</strong><br>
@@ -52,7 +51,7 @@ async function fetchJobs() {
                 jobList.appendChild(li);
             });
         } else {
-            jobList.innerHTML = "<li>No jobs found.</li>";
+            jobList.innerHTML = "<li>No jobs found.</li>"; 
         }
 
     } catch (error) {
