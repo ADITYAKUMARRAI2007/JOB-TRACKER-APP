@@ -15,7 +15,7 @@ document.getElementById("logout-btn").addEventListener("click", () => {
 });
 
 // API Key (Replace with your actual API key)
-const API_KEY = "bfa31807db84b89a1d55ac2892e5c2884649cd380cf36febba471c7f45ef3f01";
+const API_KEY = "292b9e5d13655f0e6e05600ccbfbe4ac8fc38ab9834526fbb19166310a556fc2";
 
 // Fetch job data from API
 async function fetchJobs() {
