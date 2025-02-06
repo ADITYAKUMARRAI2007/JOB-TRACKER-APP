@@ -13,7 +13,7 @@ document.getElementById("logout-btn").addEventListener("click", () => {
     localStorage.removeItem("user");
     window.location.href = "index.html"; // Redirect to login
 });
-const API_KEY = "292b9e5d13655f0e6e05600ccbfbe4ac8fc38ab9834526fbb19166310a556fc2";
+const API_KEY = '292b9e5d13655f0e6e05600ccbfbe4ac8fc38ab9834526fbb19166310a556fc2';
 
 async function fetchJobs() {
     try {
