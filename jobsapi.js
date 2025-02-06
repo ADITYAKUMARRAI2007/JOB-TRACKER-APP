@@ -17,15 +17,26 @@ document.getElementById("logout-btn").addEventListener("click", () => {
 const API_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiJhZGl0eWEuMjRiY3MxMDE3OEBzc3Quc2NhbGVyLmNvbSIsInBlcm1pc3Npb25zIjoidXNlciJ9.a-XpjR3uFdmyxpKWJchBpuYkufrOnLzsBvKIWMZPgao';
 
 async function fetchJobs() {
+    const API_KEY = 'YOUR_API_KEY';  // Replace with your API key
+
     try {
         const response = await fetch("https://api.theirstack.com/v1/jobs/search", {
             method: "POST",
             headers: {
-                "apikey": API_KEY,  // Ensure this is exactly how the API expects it
-                "Content-Type": "application/json"
+                "Accept": "application/json",
+                "Content-Type": "application/json",
+                "Authorization": `Bearer ${API_KEY}`,
             },
             body: JSON.stringify({
-                "q": "fullstack" // Simplified for now
+                "page": 0,
+                "limit": 10,
+                "posted_at_max_age_days": 15,
+                "order_by": [
+                    { "desc": true, "field": "date_posted" }
+                ],
+                "job_country_code_or": ["IN"],
+                "include_total_results": false,
+                "blur_company_data": false
             }),
         });
 
@@ -34,13 +45,12 @@ async function fetchJobs() {
         }
 
         const data = await response.json();
-        console.log(data); // Log the response to check its structure
-
+        console.log(data);  // Process and display the job data
+        // Display the job listings on the page
         const jobList = document.getElementById("job-list");
-        jobList.innerHTML = ""; // Clear previous job listings
-
-        if (data.hits && data.hits.length > 0) {
-            data.hits.forEach(job => {
+        jobList.innerHTML = "";
+        if (data.jobs && data.jobs.length > 0) {
+            data.jobs.forEach(job => {
                 const li = document.createElement("li");
                 li.innerHTML = `
                     <strong>${job.title}</strong><br>
@@ -59,3 +69,4 @@ async function fetchJobs() {
         document.getElementById("job-list").innerHTML = "<li>Error fetching job data.</li>";
     }
 }
+
