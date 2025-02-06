@@ -1,22 +1,3 @@
-document.addEventListener("DOMContentLoaded", () => {
-    // Ensure the user is authenticated
-    if (!localStorage.getItem("user")) {
-        window.location.href = "index.html"; // Redirect to login if not authenticated
-    }
-
-    // Fetch and display jobs
-    fetchJobs();
-});
-
-// Logout functionality
-document.getElementById("logout-btn").addEventListener("click", () => {
-    localStorage.removeItem("user");
-    window.location.href = "index.html"; // Redirect to login
-});
-
-// API Key (Replace with your actual API key)
-const API_KEY = "292b9e5d13655f0e6e05600ccbfbe4ac8fc38ab9834526fbb19166310a556fc2";
-
 async function fetchJobs() {
     try {
         const response = await fetch("https://api.apijobs.dev/v1/job/search", {
@@ -36,6 +17,8 @@ async function fetchJobs() {
         }
 
         const data = await response.json();
+        console.log(data); // Log the response to check its structure
+
         const jobList = document.getElementById("job-list");
         jobList.innerHTML = ""; // Clear previous job listings
 
@@ -59,5 +42,3 @@ async function fetchJobs() {
         document.getElementById("job-list").innerHTML = "<li>Error fetching job data.</li>";
     }
 }
-
-
