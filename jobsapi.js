@@ -1,3 +1,18 @@
+document.addEventListener("DOMContentLoaded", () => {
+    // Ensure the user is authenticated
+    if (!localStorage.getItem("user")) {
+        window.location.href = "index.html"; // Redirect to login if not authenticated
+    }
+
+    // Fetch and display jobs
+    fetchJobs();
+});
+
+// Logout functionality
+document.getElementById("logout-btn").addEventListener("click", () => {
+    localStorage.removeItem("user");
+    window.location.href = "index.html"; // Redirect to login
+});
 async function fetchJobs() {
     try {
         const response = await fetch("https://api.apijobs.dev/v1/job/search", {
