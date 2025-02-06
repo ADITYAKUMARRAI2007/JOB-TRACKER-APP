@@ -39,8 +39,8 @@ async function fetchJobs() {
         const jobList = document.getElementById("job-list");
         jobList.innerHTML = ""; // Clear previous job listings
 
-        if (data.jobs && data.jobs.length > 0) {
-            data.jobs.forEach(job => {
+        if (data.hits && data.hits.length > 0) {
+            data.hits.forEach(job => {
                 const li = document.createElement("li");
                 li.innerHTML = `
                     <strong>${job.title}</strong><br>
