@@ -28,12 +28,12 @@ const errorMessage = document.getElementById('error-message');
 signInButton.addEventListener('click', () => {
   signInWithPopup(auth, provider)
     .then((result) => {
-      // const user = result.user;
-      // userInfoDisplay.innerHTML = `Welcome, ${user.displayName}!`;
-      // signInButton.style.display = 'none';
-      // signOutButton.style.display = 'block';
-      // errorMessage.textContent = '';
-       window.location.href = "dashboard.html"
+      const user = result.user;
+      userInfoDisplay.innerHTML = `Welcome, ${user.displayName}!`;
+      signInButton.style.display = 'none';
+      signOutButton.style.display = 'block';
+      errorMessage.textContent = '';
+       // window.location.href = "dashboard.html"
     })
     .catch((error) => {
       errorMessage.textContent = `Error: ${error.message}`;
@@ -60,6 +60,7 @@ onAuthStateChanged(auth, (user) => {
     userInfoDisplay.innerHTML = `Welcome, ${user.displayName}!`;
     signInButton.style.display = 'none';
     signOutButton.style.display = 'block';
+    window.location.href = "dashboard.html"
   } else {
     userInfoDisplay.innerHTML = '';
     signInButton.style.display = 'block';
