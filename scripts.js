@@ -31,7 +31,7 @@ if (signInButton) {
       .then((result) => {
         const user = result.user;
         localStorage.setItem("user", JSON.stringify(user)); // Store user info
-        // window.location.href = "dashboard.html"; // Redirect to dashboard after login
+        window.location.href = "dashboard.html"; // Redirect to dashboard after login
       })
       .catch((error) => {
         errorMessage.textContent = `Error: ${error.message}`;
@@ -69,8 +69,8 @@ onAuthStateChanged(auth, (user) => {
     localStorage.removeItem("user"); // Clear user data
 
     // If not logged in and on dashboard, redirect to login
-    if (window.location.pathname.includes("dashboard.html")) {
-      window.location.href = "index.html";
-    }
+    // if (window.location.pathname.includes("dashboard.html")) {
+    //   // window.location.href = "index.html";
+    // }
   }
 });
