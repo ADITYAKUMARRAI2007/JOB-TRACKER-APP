@@ -15,17 +15,21 @@ document.getElementById("logout-btn").addEventListener("click", () => {
 });
 
 // API Key (Replace this with your actual key)
+// API Key (Replace with your actual API key)
 const API_KEY = "bfa31807db84b89a1d55ac2892e5c2884649cd380cf36febba471c7f45ef3f01";
 
 // Fetch job data from API
 async function fetchJobs() {
     try {
-        const response = await fetch(`https://api.apijobs.dev/v1/job/search`, {
-            method: "GET",
+        const response = await fetch("https://api.apijobs.dev/v1/job/search", {
+            method: "POST", // API requires POST
             headers: {
-                "Authorization": `Bearer ${API_KEY}`, // Include API Key in headers if required
+                "apikey": API_KEY, // API key in the header
                 "Content-Type": "application/json",
-            }
+            },
+            body: JSON.stringify({
+                "q": "fullstack" // Search query
+            }),
         });
 
         if (!response.ok) {
@@ -33,7 +37,6 @@ async function fetchJobs() {
         }
 
         const data = await response.json();
-
         const jobList = document.getElementById("job-list");
         jobList.innerHTML = ""; // Clear previous job listings
 
