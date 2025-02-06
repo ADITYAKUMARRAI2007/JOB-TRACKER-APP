@@ -62,11 +62,11 @@ onAuthStateChanged(auth, (user) => {
     }
     
     // Only redirect to dashboard if on login page
-    if (window.location.pathname.includes("index.html")) {
-      window.location.href = "dashboard.html";
-    }
-  } else {
-    localStorage.removeItem("user"); // Clear user data
+  //   if (window.location.pathname.includes("index.html")) {
+  //     window.location.href = "dashboard.html";
+  //   }
+  // } else {
+  //   localStorage.removeItem("user"); // Clear user data
 
     // If not logged in and on dashboard, redirect to login
     // if (window.location.pathname.includes("dashboard.html")) {
