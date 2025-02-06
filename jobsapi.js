@@ -13,19 +13,20 @@ document.getElementById("logout-btn").addEventListener("click", () => {
     localStorage.removeItem("user");
     window.location.href = "index.html"; // Redirect to login
 });
+
 const API_KEY = '292b9e5d13655f0e6e05600ccbfbe4ac8fc38ab9834526fbb19166310a556fc2';
 
 async function fetchJobs() {
     try {
-        const response = await fetch("https://app.apijobs.dev/jobs", {
+        const response = await fetch("https://api.apijobs.dev/v1/job/search", {
             method: "POST",
             headers: {
-                "apikey": API_KEY,  // Ensure this is exactly how the API expects it
-                "Content-Type": "application/json"
+                "apikey": API_KEY,  // Correct API key
+                "Content-Type": "application/json" // Set content type to JSON
             },
             body: JSON.stringify({
-                "q": "fullstack",
-                "employmentType": "FULL_TIME" // Make sure to include this
+                "q": "fullstack",  // Search query for jobs
+                "employmentType": "FULL_TIME" // You can add more filters as needed
             }),
         });
 
@@ -39,8 +40,8 @@ async function fetchJobs() {
         const jobList = document.getElementById("job-list");
         jobList.innerHTML = ""; // Clear previous job listings
 
-        if (data.hits && data.hits.length > 0) {
-            data.hits.forEach(job => {
+        if (data.jobs && data.jobs.length > 0) {  // Update this based on the response format
+            data.jobs.forEach(job => {
                 const li = document.createElement("li");
                 li.innerHTML = `
                     <strong>${job.title}</strong><br>
@@ -51,7 +52,7 @@ async function fetchJobs() {
                 jobList.appendChild(li);
             });
         } else {
-            jobList.innerHTML = "<li>No jobs found.</li>"; 
+            jobList.innerHTML = "<li>No jobs found.</li>";
         }
 
     } catch (error) {
