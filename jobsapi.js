@@ -16,28 +16,25 @@ document.getElementById("logout-btn").addEventListener("click", () => {
 
 const API_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiJhZGl0eWEuMjRiY3MxMDE3OEBzc3Quc2NhbGVyLmNvbSIsInBlcm1pc3Npb25zIjoidXNlciJ9.a-XpjR3uFdmyxpKWJchBpuYkufrOnLzsBvKIWMZPgao';
 async function fetchJobs() {
+    const API_KEY = "YOUR_API_TOKEN"; // Replace with the actual API token
+
     try {
         const response = await fetch("https://api.theirstack.com/v1/jobs/search", {
             method: "POST",
             headers: {
                 "Accept": "application/json",
                 "Content-Type": "application/json",
-                "Authorization": "Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiJhZGl0eWEuMjRiY3MxMDE3OEBzc3Quc2NhbGVyLmNvbSIsInBlcm1pc3Npb25zIjoidXNlciJ9.a-XpjR3uFdmyxpKWJchBpuYkufrOnLzsBvKIWMZPgao"
+                "Authorization": `Bearer ${API_KEY}`, // Ensure correct token format
             },
             body: JSON.stringify({
                 "page": 0,
                 "limit": 10,
                 "posted_at_max_age_days": 15,
-                "order_by": [
-                    {
-                        "desc": true,
-                        "field": "date_posted"
-                    }
-                ],
+                "order_by": [{ "desc": true, "field": "date_posted" }],
                 "job_country_code_or": ["IN"],
                 "include_total_results": false,
                 "blur_company_data": false
-            })
+            }),
         });
 
         if (!response.ok) {
@@ -45,17 +42,28 @@ async function fetchJobs() {
         }
 
         const data = await response.json();
-        console.log("Fetched Jobs:", data);
-        return data;
+        console.log("Job Data:", data);
+
+        const jobList = document.getElementById("job-list");
+        jobList.innerHTML = "";
+
+        if (data.jobs && data.jobs.length > 0) {
+            data.jobs.forEach(job => {
+                const li = document.createElement("li");
+                li.innerHTML = `
+                    <strong>${job.title}</strong><br>
+                    Company: ${job.company || "N/A"}<br>
+                    Location: ${job.location || "Not specified"}<br>
+                    Salary: ${job.salary || "Not disclosed"}
+                `;
+                jobList.appendChild(li);
+            });
+        } else {
+            jobList.innerHTML = "<li>No jobs found.</li>"; 
+        }
+
     } catch (error) {
         console.error("Error fetching jobs:", error);
-        return null;
+        document.getElementById("job-list").innerHTML = "<li>Error fetching job data.</li>";
     }
 }
-
-// Example: Fetch and display jobs on page load
-fetchJobs().then(data => {
-    if (data && data.jobs) {
-        data.jobs.forEach(job => console.log(`Job: ${job.title} at ${job.company}`));
-    }
-});
