@@ -28,11 +28,11 @@ const errorMessage = document.getElementById('error-message');
 signInButton.addEventListener('click', () => {
   signInWithPopup(auth, provider)
     .then((result) => {
-      const user = result.user;
-      userInfoDisplay.innerHTML = `Welcome, ${user.displayName}!`;
-      signInButton.style.display = 'none';
-      signOutButton.style.display = 'block';
-      errorMessage.textContent = '';
+      // const user = result.user;
+      // userInfoDisplay.innerHTML = `Welcome, ${user.displayName}!`;
+      // signInButton.style.display = 'none';
+      // signOutButton.style.display = 'block';
+      // errorMessage.textContent = '';
        window.location.href = "dashboard.html"
     })
     .catch((error) => {
@@ -41,18 +41,18 @@ signInButton.addEventListener('click', () => {
 });
 
 // Sign-out event
-signOutButton.addEventListener('click', () => {
-  signOut(auth)
-    .then(() => {
-      userInfoDisplay.innerHTML = '';
-      signInButton.style.display = 'block';
-      signOutButton.style.display = 'none';
-      errorMessage.textContent = '';
-    })
-    .catch((error) => {
-      errorMessage.textContent = `Error: ${error.message}`;
-    });
-});
+// signOutButton.addEventListener('click', () => {
+//   signOut(auth)
+//     .then(() => {
+//       userInfoDisplay.innerHTML = '';
+//       signInButton.style.display = 'block';
+//       signOutButton.style.display = 'none';
+//       errorMessage.textContent = '';
+//     })
+//     .catch((error) => {
+//       errorMessage.textContent = `Error: ${error.message}`;
+//     });
+// });
 
 // Monitor auth state
 onAuthStateChanged(auth, (user) => {
