@@ -1,0 +1,77 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Dashboard</title>
+    <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+    <h2>Welcome to the Job Tracker Dashboard</h2>
+    <div class="dashboard-container">
+        <button id="logout-btn">Logout</button>
+        <h3>Job List</h3>
+        <ul class="job-list" id="job-list"></ul>
+    </div>
+
+    <script type="module">
+        // Import Firebase functions
+        import { initializeApp } from "https://www.gstatic.com/firebasejs/9.6.1/firebase-app.js";
+        import { getAuth, signOut, onAuthStateChanged } from "https://www.gstatic.com/firebasejs/9.6.1/firebase-auth.js";
+        import { getFirestore, collection, getDocs } from "https://www.gstatic.com/firebasejs/9.6.1/firebase-firestore.js";
+
+        // Firebase Configuration
+        const firebaseConfig = {
+            apiKey: "AIzaSyAVnIv8VamXAhfKxZVjYNcS7l88h2Q1NaM",
+            authDomain: "job-tracker-app-60030.firebaseapp.com",
+            projectId: "job-tracker-app-60030",
+            storageBucket: "job-tracker-app-60030.appspot.com",
+            messagingSenderId: "567017229800",
+            appId: "1:567017229800:web:debf51da5cfa064d91e85d"
+        };
+
+        // Initialize Firebase
+        const app = initializeApp(firebaseConfig);
+        const auth = getAuth(app);
+        const db = getFirestore(app);
+
+        // Redirect if user is not authenticated
+        onAuthStateChanged(auth, (user) => {
+            if (!user) {
+                window.location.href = "index.html";
+            }
+        });
+
+        // Logout Function
+        document.getElementById("logout-btn").addEventListener("click", () => {
+            signOut(auth).then(() => {
+                localStorage.removeItem("user");
+                window.location.href = "index.html";
+            }).catch((error) => {
+                console.error("Logout Error:", error);
+            });
+        });
+
+        // Fetch Jobs from Firestore
+        async function fetchJobs() {
+            try {
+                const jobList = document.getElementById('job-list');
+                const querySnapshot = await getDocs(collection(db, "jobs"));
+                
+                jobList.innerHTML = ""; // Clear previous jobs
+                
+                querySnapshot.forEach((doc) => {
+                    const job = doc.data();
+                    const li = document.createElement("li");
+                    li.innerHTML = `<strong>${job.title}</strong><br>Company: ${job.company}<br>Location: ${job.location}<br>Salary: ${job.salary}`;
+                    jobList.appendChild(li);
+                });
+            } catch (error) {
+                console.error("Error fetching jobs:", error);
+            }
+        }
+
+        document.addEventListener("DOMContentLoaded", fetchJobs);
+    </script>
+</body>
+</html>
