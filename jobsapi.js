@@ -17,7 +17,7 @@ const API_KEY = '292b9e5d13655f0e6e05600ccbfbe4ac8fc38ab9834526fbb19166310a556fc
 
 async function fetchJobs() {
     try {
-        const response = await fetch("https://api.apijobs.dev/v1/job/search", {
+        const response = await fetch("https://app.apijobs.dev/jobs", {
             method: "POST",
             headers: {
                 "apikey": API_KEY,  // Ensure this is exactly how the API expects it
