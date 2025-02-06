@@ -33,6 +33,7 @@ signInButton.addEventListener('click', () => {
       signInButton.style.display = 'none';
       signOutButton.style.display = 'block';
       errorMessage.textContent = '';
+       window.location.href = "dashboard.html"
     })
     .catch((error) => {
       errorMessage.textContent = `Error: ${error.message}`;
