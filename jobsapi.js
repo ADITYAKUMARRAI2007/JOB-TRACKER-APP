@@ -22,14 +22,12 @@ const API_KEY = "bfa31807db84b89a1d55ac2892e5c2884649cd380cf36febba471c7f45ef3f0
 async function fetchJobs() {
     try {
         const response = await fetch("https://api.apijobs.dev/v1/job/search", {
-            method: "POST", // API requires POST
+            method: "POST",
             headers: {
-                "apikey": API_KEY, // API key in the header
+                "apikey": API_KEY,
                 "Content-Type": "application/json",
             },
-            body: JSON.stringify({
-                "q": "fullstack" // Search query
-            }),
+            body: JSON.stringify({ "q": "fullstack" }),
         });
 
         if (!response.ok) {
@@ -37,28 +35,31 @@ async function fetchJobs() {
         }
 
         const data = await response.json();
-        const jobList = document.getElementById("job-list");
-        jobList.innerHTML = ""; // Clear previous job listings
+        console.log("API Response:", data); // 🔍 Log full API response
 
-        // Check if jobs exist in response
-        if (data.jobs && data.jobs.length > 0) {
+        const jobList = document.getElementById("job-list");
+        jobList.innerHTML = "";
+
+        // 🛠 Check if data.jobs exists
+        if (data && data.jobs && Array.isArray(data.jobs) && data.jobs.length > 0) {
             data.jobs.forEach(job => {
                 const li = document.createElement("li");
                 li.innerHTML = `
-                    <strong>${job.title}</strong><br>
-                    Company: ${job.company ? job.company : "N/A"}<br>
-                    Location: ${job.location ? job.location : "Not specified"}<br>
-                    Salary: ${job.salary ? job.salary : "Not disclosed"}
+                    <strong>${job.title || "Unknown Job"}</strong><br>
+                    Company: ${job.company || "N/A"}<br>
+                    Location: ${job.location || "Not specified"}<br>
+                    Salary: ${job.salary || "Not disclosed"}
                 `;
                 jobList.appendChild(li);
             });
         } else {
-            jobList.innerHTML = "<li>No jobs found.</li>"; // If no jobs exist
+            jobList.innerHTML = "<li>No jobs found.</li>";
         }
 
     } catch (error) {
         console.error("Error fetching jobs:", error);
-        document.getElementById("job-list").innerHTML = "<li>Error fetching job data.</li>"; // Show error message
+        document.getElementById("job-list").innerHTML = "<li>Error fetching job data.</li>";
     }
 }
+
 
