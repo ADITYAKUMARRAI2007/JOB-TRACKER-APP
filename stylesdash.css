@@ -1,44 +1,85 @@
 body {
     font-family: Arial, sans-serif;
-    background-color: #f4f4f4;
-    text-align: center;
     margin: 0;
     padding: 0;
+    background-color: #f7f7f7;
 }
 
-.dashboard-container {
-    max-width: 600px;
-    margin: 20px auto;
+header {
+    background-color: #333;
+    color: white;
     padding: 20px;
-    background: white;
-    box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.1);
-    border-radius: 8px;
+    text-align: center;
+}
+
+header h1 {
+    margin: 0;
 }
 
 button {
-    background-color: #007BFF;
+    background-color: #4CAF50;
     color: white;
     border: none;
-    padding: 10px 15px;
+    padding: 10px 20px;
     cursor: pointer;
-    margin-bottom: 20px;
     border-radius: 5px;
 }
 
 button:hover {
-    background-color: #0056b3;
+    background-color: #45a049;
 }
 
-.job-list {
+#job-list {
     list-style-type: none;
     padding: 0;
+    margin-top: 20px;
 }
 
-.job-list li {
-    background: #ffffff;
-    padding: 10px;
-    margin: 10px 0;
-    border: 1px solid #ddd;
-    border-radius: 5px;
-    box-shadow: 2px 2px 5px rgba(0, 0, 0, 0.1);
+#job-list li {
+    background-color: #fff;
+    padding: 15px;
+    margin-bottom: 15px;
+    border-radius: 8px;
+    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+}
+
+#job-list li strong {
+    font-size: 18px;
+    color: #333;
+}
+
+#job-list li span {
+    display: block;
+    margin: 5px 0;
+    color: #555;
+}
+
+#job-list li .salary {
+    font-weight: bold;
+    color: green;
+}
+
+#job-list li .company {
+    color: #444;
+}
+
+#job-list li .location {
+    color: #777;
+}
+
+#job-list li .job-type {
+    color: #ff5722;
+    font-weight: bold;
+}
+
+#job-list li .job-description {
+    max-height: 50px;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    margin-top: 10px;
+    color: #555;
+}
+
+#job-list li .job-description.expand {
+    max-height: none;
 }
