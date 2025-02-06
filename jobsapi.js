@@ -14,11 +14,11 @@ document.getElementById("logout-btn").addEventListener("click", () => {
     window.location.href = "index.html"; // Redirect to login
 });
 
-const API_KEY = '292b9e5d13655f0e6e05600ccbfbe4ac8fc38ab9834526fbb19166310a556fc2';
+const API_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiJhZGl0eWEuMjRiY3MxMDE3OEBzc3Quc2NhbGVyLmNvbSIsInBlcm1pc3Npb25zIjoidXNlciJ9.a-XpjR3uFdmyxpKWJchBpuYkufrOnLzsBvKIWMZPgao';
 
 async function fetchJobs() {
     try {
-        const response = await fetch("https://api.apijobs.dev/v1/job/search", {
+        const response = await fetch("https://api.theirstack.com/v1/jobs/search", {
             method: "POST",
             headers: {
                 "apikey": API_KEY,  // Ensure this is exactly how the API expects it
