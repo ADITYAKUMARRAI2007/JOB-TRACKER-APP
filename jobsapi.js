@@ -68,16 +68,18 @@ async function fetchJobs() {
 
     try {
         const response = await fetch(url, options);
-        
+
+        // Log the full response for debugging
+        const responseData = await response.json();
+        console.log("API Response:", responseData);
+
         if (!response.ok) {
             throw new Error(`Error: ${response.status} ${response.statusText}`);
         }
 
-        const data = await response.json();
-        
-        // Check if the data contains job listings
-        if (data && data.jobs && data.jobs.length > 0) {
-            const jobs = data.jobs;
+        // If no jobs found, show an appropriate message
+        if (responseData && responseData.jobs && responseData.jobs.length > 0) {
+            const jobs = responseData.jobs;
             jobList.innerHTML = ''; // Clear loading text
 
             jobs.forEach(job => {
@@ -106,6 +108,7 @@ async function fetchJobs() {
         console.error("Error fetching jobs:", error);
     }
 }
+
 
 // Add job to Kanban Board
 function addJobToKanban(job) {
