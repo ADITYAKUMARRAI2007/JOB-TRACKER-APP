@@ -1,4 +1,4 @@
-document.addEventListener("DOMContentLoaded", () => {
+document.addEventListener("DOMContentLoaded", async () => {
     // ✅ Ensure user authentication
     if (!localStorage.getItem("user")) {
         window.location.href = "index.html";
@@ -15,7 +15,7 @@ document.addEventListener("DOMContentLoaded", () => {
     }
 
     // ✅ Fetch jobs on page load
-    fetchJobs();
+    await fetchJobs();
 });
 
 // ✅ Replace with your actual API key
@@ -40,7 +40,7 @@ async function fetchJobs() {
             "Content-Type": "application/json"
         },
         body: JSON.stringify({
-            q: "fullstack" // Change this to any job keyword you want
+            q: "developer" // Try different job keywords
         })
     };
 
@@ -54,10 +54,15 @@ async function fetchJobs() {
         const data = await response.json();
         console.log("Full API Response:", data);
 
+        // ✅ Check if jobs array exists
+        if (!data || !data.jobs) {
+            throw new Error("Invalid API response structure");
+        }
+
         // ✅ Clear previous job results
         jobList.innerHTML = "";
 
-        if (data.jobs && data.jobs.length > 0) { 
+        if (data.jobs.length > 0) { 
             data.jobs.forEach(job => {
                 console.log("Job Data:", job);
 
