@@ -1,6 +1,29 @@
 body {
     font-family: Arial, sans-serif;
+    margin: 0;
+    padding: 20px;
+    background: #f8f9fa;
+}
+
+header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    background: #007bff;
+    color: white;
+    padding: 10px;
+}
+
+h1, h2 {
     text-align: center;
+}
+
+#job-section {
+    margin: 20px 0;
+    padding: 10px;
+    background: white;
+    border-radius: 8px;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
 }
 
 #job-list {
@@ -8,39 +31,60 @@ body {
     padding: 0;
 }
 
-li {
-    border: 1px solid #ccc;
+#job-list li {
+    background: #fff;
     padding: 10px;
-    margin: 10px;
+    margin: 5px 0;
+    border-radius: 5px;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
 }
 
-button {
+.apply-btn {
+    display: block;
+    margin-top: 10px;
+    background: #28a745;
+    color: white;
+    border: none;
     padding: 5px 10px;
-    margin-top: 5px;
     cursor: pointer;
+    border-radius: 4px;
 }
 
-.kanban {
+.apply-btn:hover {
+    background: #218838;
+}
+
+/* ✅ Kanban Board */
+.kanban-container {
     display: flex;
-    justify-content: center;
-    gap: 20px;
+    justify-content: space-around;
+    margin-top: 20px;
 }
 
-.column {
+.kanban-column {
     width: 30%;
+    background: #ffffff;
     padding: 10px;
-    border: 1px solid #000;
-    min-height: 200px;
+    border-radius: 5px;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
 }
 
-.kanban-list {
-    list-style: none;
-    padding: 0;
+.kanban-column h3 {
+    text-align: center;
 }
 
-.kanban-list li {
-    background: lightgray;
-    padding: 5px;
-    margin: 5px;
-    cursor: grab;
+.kanban-item {
+    background: #e9ecef;
+    padding: 8px;
+    margin: 5px 0;
+    border-radius: 5px;
+}
+
+/* ✅ Statistics */
+#stats {
+    margin-top: 20px;
+    background: white;
+    padding: 15px;
+    border-radius: 8px;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
 }
