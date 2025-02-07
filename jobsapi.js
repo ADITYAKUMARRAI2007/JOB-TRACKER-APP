@@ -95,14 +95,27 @@ async function fetchJobs() {
     }
 }
 
-
-
 // Add job to Kanban Board
 function addJobToKanban(job) {
     // Kanban columns
     const appliedColumn = document.getElementById("applied");
     const interviewColumn = document.getElementById("interview");
     const offerColumn = document.getElementById("offer");
+
+    // Ensure the Kanban columns and 'kanban-items' container exist
+    if (!appliedColumn || !interviewColumn || !offerColumn) {
+        console.error("Kanban columns not found in the DOM.");
+        return;
+    }
+
+    const appliedItems = appliedColumn.querySelector('.kanban-items');
+    const interviewItems = interviewColumn.querySelector('.kanban-items');
+    const offerItems = offerColumn.querySelector('.kanban-items');
+
+    if (!appliedItems || !interviewItems || !offerItems) {
+        console.error("Kanban item containers not found in columns.");
+        return;
+    }
 
     // Create a new item for the Kanban board
     const jobItem = document.createElement('div');
@@ -116,7 +129,7 @@ function addJobToKanban(job) {
     `;
 
     // Add item to 'Applied' column by default
-    appliedColumn.querySelector('.kanban-items').appendChild(jobItem);
+    appliedItems.appendChild(jobItem);
 
     // Increment counts for Kanban board columns
     updateKanbanCounts();
@@ -137,18 +150,28 @@ function moveJobToColumn(jobItem, status) {
     const interviewColumn = document.getElementById("interview");
     const offerColumn = document.getElementById("offer");
 
-    // Remove job from current column
-    appliedColumn.querySelector('.kanban-items').removeChild(jobItem);
-    interviewColumn.querySelector('.kanban-items').removeChild(jobItem);
-    offerColumn.querySelector('.kanban-items').removeChild(jobItem);
+    const appliedItems = appliedColumn.querySelector('.kanban-items');
+    const interviewItems = interviewColumn.querySelector('.kanban-items');
+    const offerItems = offerColumn.querySelector('.kanban-items');
+
+    // Only remove from the column if the job item exists there
+    if (appliedItems.contains(jobItem)) {
+        appliedItems.removeChild(jobItem);
+    }
+    if (interviewItems.contains(jobItem)) {
+        interviewItems.removeChild(jobItem);
+    }
+    if (offerItems.contains(jobItem)) {
+        offerItems.removeChild(jobItem);
+    }
 
     // Add job to the selected column
     if (status === "applied") {
-        appliedColumn.querySelector('.kanban-items').appendChild(jobItem);
+        appliedItems.appendChild(jobItem);
     } else if (status === "interview") {
-        interviewColumn.querySelector('.kanban-items').appendChild(jobItem);
+        interviewItems.appendChild(jobItem);
     } else if (status === "offer") {
-        offerColumn.querySelector('.kanban-items').appendChild(jobItem);
+        offerItems.appendChild(jobItem);
     }
 
     // Update the Kanban counts after moving the job
