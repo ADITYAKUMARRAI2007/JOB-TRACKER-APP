@@ -2,6 +2,7 @@ document.addEventListener("DOMContentLoaded", () => {
     if (!localStorage.getItem("user")) {
         window.location.href = "index.html";
     }
+    
 
     document.getElementById("logout-btn").addEventListener("click", () => {
         localStorage.removeItem("user");
