@@ -37,7 +37,6 @@ document.addEventListener("DOMContentLoaded", () => {
 
 // API Key provided by the user
 const API_KEY = "292b9e5d13655f0e6e05600ccbfbe4ac8fc38ab9834526fbb19166310a556fc2";
-
 async function fetchJobs() {
     const jobList = document.getElementById("job-list");
 
@@ -57,14 +56,14 @@ async function fetchJobs() {
             "Content-Type": "application/json"
         },
         body: JSON.stringify({
-            q: "developer" // Change to a more common query if needed
+            q: "developer" // You can try changing this to a more common term
         })
     };
 
     try {
         const response = await fetch(url, options);
         const data = await response.json();
-        console.log("API Response:", data); // Log the full response to understand what's returned
+        console.log("API Response:", data); // Log the full response
 
         // Check if the data contains job listings
         if (data && data.jobs && data.jobs.length > 0) {
@@ -82,12 +81,6 @@ async function fetchJobs() {
                     <button class="apply-btn" data-job-id="${job.id}">Apply</button>
                 `;
                 jobList.appendChild(jobItem);
-
-                // Handle apply button click
-                const applyBtn = jobItem.querySelector('.apply-btn');
-                applyBtn.addEventListener('click', () => {
-                    addJobToKanban(job);
-                });
             });
         } else {
             jobList.innerHTML = '<li>No jobs found for your search criteria.</li>';
@@ -97,6 +90,7 @@ async function fetchJobs() {
         console.error("Error fetching jobs:", error);
     }
 }
+
 
 // Add job to Kanban Board
 function addJobToKanban(job) {
