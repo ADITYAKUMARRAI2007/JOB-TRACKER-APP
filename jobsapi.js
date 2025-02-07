@@ -52,22 +52,22 @@ async function fetchJobs() {
 
         jobList.innerHTML = "";
 
-        if (data.jobs && data.jobs.length > 0) {
-            data.jobs.forEach(job => {
-                const li = document.createElement("li");
-                li.innerHTML = `
-                    <strong>${job.title}</strong><br>
-                    Company: ${job.company || "N/A"}<br>
-                    Location: ${job.location || "Not specified"}<br>
-                    Salary: ${job.salary || "Not disclosed"}<br>
-                    <a href="${job.url}" target="_blank">View Job</a> <!-- 🔹 Added job link -->
-                `;
-                jobList.appendChild(li);
-            });
-        } else {
-            console.warn("No jobs found.");
-            jobList.innerHTML = "<li>No jobs found. Try changing the filters.</li>";
-        }
+     if (data.data && data.data.length > 0) { // ✅ Correct key
+    data.data.forEach(job => {
+        const li = document.createElement("li");
+        li.innerHTML = `
+            <strong>${job.title}</strong><br>
+            Company: ${job.company || "N/A"}<br>
+            Location: ${job.location || "Not specified"}<br>
+            Salary: ${job.salary || "Not disclosed"}<br>
+            <a href="${job.url}" target="_blank">View Job</a>
+        `;
+        jobList.appendChild(li);
+    });
+} else {
+    console.warn("No jobs found in API response.");
+    jobList.innerHTML = "<li>No jobs found. Try changing the filters.</li>";
+}
 
     } catch (error) {
         console.error("Error fetching job data:", error);
