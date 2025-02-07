@@ -2,7 +2,6 @@ document.addEventListener("DOMContentLoaded", () => {
     if (!localStorage.getItem("user")) {
         window.location.href = "index.html";
     }
-    
 
     document.getElementById("logout-btn").addEventListener("click", () => {
         localStorage.removeItem("user");
@@ -10,9 +9,7 @@ document.addEventListener("DOMContentLoaded", () => {
     });
 
     fetchJobs();
-
-    
-   
+});  // ✅ Added missing closing bracket for DOMContentLoaded
 
 const API_KEY = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiJhZGl0eWFyYWkwNDAxMjAwN0BnbWFpbC5jb20iLCJwZXJtaXNzaW9ucyI6InVzZXIifQ.tN9FVZPfqQJvk2fNb8Z9wVBIe2eMDIk1YKtt17uYX-o";
 
