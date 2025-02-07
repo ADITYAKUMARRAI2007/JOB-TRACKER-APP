@@ -7,32 +7,43 @@
     <link rel="stylesheet" href="styles.css">
 </head>
 <body>
+    <!-- ✅ Header Section -->
+    <header>
+        <h1>Job Application Tracker</h1>
+        <button id="logout-btn">Logout</button>
+    </header>
 
-    <h1>Job Application Tracker</h1>
+    <!-- ✅ Job Listings Section -->
+    <section id="job-section">
+        <h2>Available Jobs</h2>
+        <ul id="job-list"></ul>
+    </section>
 
-    <button id="logout-btn">Logout</button>
-
-    <ul id="job-list"></ul>
-
-    <h2>Job Application Kanban Board</h2>
-    <div class="kanban">
-        <div class="column" id="applied">
-            <h3>Applied</h3>
-            <ul class="kanban-list"></ul>
+    <!-- ✅ Kanban Board -->
+    <section id="kanban-board">
+        <h2>Job Application Progress</h2>
+        <div class="kanban-container">
+            <div class="kanban-column" id="applied">
+                <h3>Applied (<span id="applied-count">0</span>)</h3>
+            </div>
+            <div class="kanban-column" id="interview">
+                <h3>Interview (<span id="interview-count">0</span>)</h3>
+            </div>
+            <div class="kanban-column" id="offer">
+                <h3>Offer (<span id="offer-count">0</span>)</h3>
+            </div>
         </div>
-        <div class="column" id="interview">
-            <h3>Interview</h3>
-            <ul class="kanban-list"></ul>
-        </div>
-        <div class="column" id="offer">
-            <h3>Offer</h3>
-            <ul class="kanban-list"></ul>
-        </div>
-    </div>
+    </section>
 
-    <h2>Job Statistics</h2>
-    <p>Applications Submitted: <span id="applications-count">0</span></p>
-    
-    <script src="script.js"></script>
+    <!-- ✅ Statistics Section -->
+    <section id="stats">
+        <h2>Job Statistics</h2>
+        <p>Total Applications: <span id="total-applications">0</span></p>
+        <p>Interviews Scheduled: <span id="total-interviews">0</span></p>
+        <p>Offers Received: <span id="total-offers">0</span></p>
+    </section>
+
+    <!-- ✅ Include JavaScript -->
+    <script src="jobsapi.js"></script>
 </body>
 </html>
