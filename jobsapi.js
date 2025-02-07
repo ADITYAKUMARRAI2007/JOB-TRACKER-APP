@@ -1,26 +1,3 @@
-document.addEventListener("DOMContentLoaded", async () => {
-    // ✅ Ensure user authentication
-    if (!localStorage.getItem("user")) {
-        window.location.href = "index.html";
-        return;
-    }
-
-    // ✅ Safe logout handling
-    const logoutBtn = document.getElementById("logout-btn");
-    if (logoutBtn) {
-        logoutBtn.addEventListener("click", () => {
-            localStorage.removeItem("user");
-            window.location.href = "index.html";
-        });
-    }
-
-    // ✅ Fetch jobs on page load
-    await fetchJobs();
-});
-
-// ✅ Replace with your actual API key
-const API_KEY = "292b9e5d13655f0e6e05600ccbfbe4ac8fc38ab9834526fbb19166310a556fc2";
-
 async function fetchJobs() {
     const jobList = document.getElementById("job-list");
 
@@ -54,16 +31,16 @@ async function fetchJobs() {
         const data = await response.json();
         console.log("Full API Response:", data);
 
-        // ✅ Check if jobs array exists
-        if (!data || !data.jobs) {
+        // ✅ Check if `hits` array exists
+        if (!data || !Array.isArray(data.hits)) {
             throw new Error("Invalid API response structure");
         }
 
         // ✅ Clear previous job results
         jobList.innerHTML = "";
 
-        if (data.jobs.length > 0) { 
-            data.jobs.forEach(job => {
+        if (data.hits.length > 0) { 
+            data.hits.forEach(job => { // 🔥 Changed from data.jobs to data.hits
                 console.log("Job Data:", job);
 
                 // ✅ Extract job details safely
