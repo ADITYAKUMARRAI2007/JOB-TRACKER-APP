@@ -12,7 +12,8 @@ document.addEventListener("DOMContentLoaded", () => {
 
     
    
-});
+
+const API_KEY = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiJhZGl0eWFyYWkwNDAxMjAwN0BnbWFpbC5jb20iLCJwZXJtaXNzaW9ucyI6InVzZXIifQ.tN9FVZPfqQJvk2fNb8Z9wVBIe2eMDIk1YKtt17uYX-o";
 
 async function fetchJobs() {
     try {
@@ -21,7 +22,7 @@ async function fetchJobs() {
             headers: {
                 "Accept": "application/json",
                 "Content-Type": "application/json",
-                "Authorization": `Bearer YOUR_API_KEY_HERE`
+                "Authorization": `Bearer ${API_KEY}`
             },
             body: JSON.stringify({
                 "page": 0,
@@ -39,7 +40,7 @@ async function fetchJobs() {
         }
 
         const data = await response.json();
-        console.log("Full API Response:", data);
+        console.log("Full API Response:", data);  // ✅ Print entire API response
 
         const jobList = document.getElementById("job-list");
         if (!jobList) {
@@ -49,8 +50,11 @@ async function fetchJobs() {
 
         jobList.innerHTML = "";
 
-        if (data.data && data.data.length > 0) {
-            data.data.forEach((job, index) => {
+        if (data.data && data.data.length > 0) { 
+            data.data.forEach(job => {
+                console.log("Job Data:", job);  // ✅ Print each job object
+
+                // 🔍 Find the correct job title field
                 const jobTitle = job.job_title || job.name || job.title || job.position || "No title available";
 
                 const li = document.createElement("li");
@@ -62,13 +66,12 @@ async function fetchJobs() {
                     <a href="${job.url}" target="_blank">🔗 View Job</a>
                 `;
                 jobList.appendChild(li);
-
-               
             });
         } else {
             console.warn("No jobs found in API response.");
             jobList.innerHTML = "<li>No jobs found. Try adjusting the filters.</li>";
         }
+
     } catch (error) {
         console.error("Error fetching job data:", error);
         const jobList = document.getElementById("job-list");
