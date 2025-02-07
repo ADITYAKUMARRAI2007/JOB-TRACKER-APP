@@ -58,7 +58,7 @@ async function fetchJobs() {
             "Content-Type": "application/json"
         },
         body: JSON.stringify({
-            q: "developer" // Test a different query like "developer"
+            q: "developer" // Search for "developer" jobs
         })
     };
 
@@ -66,10 +66,11 @@ async function fetchJobs() {
         // Fetch job listings
         const response = await fetch(url, options);
         const data = await response.json();
-        console.log("API Response:", data); // Log the full API response
+        
+        console.log("API Response:", data); // Log the full API response for debugging
 
         // Check if there are hits (jobs) in the response
-        if (data && data.hits && data.hits.length > 0) {
+        if (data && data.hits && Array.isArray(data.hits) && data.hits.length > 0) {
             const jobs = data.hits;
             jobList.innerHTML = '';  // Clear the loading message
 
@@ -94,6 +95,8 @@ async function fetchJobs() {
         console.error("Error fetching jobs:", error);
     }
 }
+
+
 
 
 
