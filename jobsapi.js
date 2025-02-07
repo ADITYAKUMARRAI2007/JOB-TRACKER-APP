@@ -57,9 +57,10 @@ async function fetchJobs() {
             "apikey": API_KEY,
             "Content-Type": "application/json"
         },
-        body: JSON.stringify({
-            q: "fullstack" // Search query for fullstack jobs (can be modified)
-        })
+       body: JSON.stringify({
+    q: "developer" // Try a different search term
+})
+
     };
 
     try {
