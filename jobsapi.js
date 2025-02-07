@@ -4,7 +4,6 @@ document.addEventListener("DOMContentLoaded", () => {
         window.location.href = "index.html";
         return;
     }
-    
 
     // ✅ Safe logout handling
     const logoutBtn = document.getElementById("logout-btn");
@@ -19,8 +18,8 @@ document.addEventListener("DOMContentLoaded", () => {
     fetchJobs();
 });
 
-// ✅ Replace with backend proxy or hide in environment variable
-const API_KEY = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiJhZGl0eWFyYWkwNDAxMjAwN0BnbWFpbC5jb20iLCJwZXJtaXNzaW9ucyI6InVzZXIifQ.tN9FVZPfqQJvk2fNb8Z9wVBIe2eMDIk1YKtt17uYX-o"; 
+// ✅ Replace with your actual API key
+const API_KEY = "292b9e5d13655f0e6e05600ccbfbe4ac8fc38ab9834526fbb19166310a556fc2";
 
 async function fetchJobs() {
     const jobList = document.getElementById("job-list");
@@ -30,25 +29,18 @@ async function fetchJobs() {
         return;
     }
 
-    // ✅ Show loading state
+    // ✅ Show a loading message while fetching data
     jobList.innerHTML = '<li class="loading">Fetching jobs... ⏳</li>';
 
-    const url = "https://api.theirstack.com/v1/jobs/search";
+    const url = "https://api.apijobs.dev/v1/job/search";
     const options = {
         method: "POST",
         headers: {
-            "Accept": "application/json",
-            "Content-Type": "application/json",
-            "Authorization": `Bearer ${API_KEY}`
+            "apikey": API_KEY,
+            "Content-Type": "application/json"
         },
         body: JSON.stringify({
-            page: 0,
-            limit: 10,
-            order_by: [{ desc: true, field: "date_posted" }],
-            include_total_results: false,
-            blur_company_data: false,
-            job_country_code_or: ["IN"],  // Fetch jobs in India
-            posted_at_max_age_days: 15
+            q: "fullstack" // Change this to any job keyword you want
         })
     };
 
@@ -71,10 +63,9 @@ async function fetchJobs() {
 
                 // ✅ Extract job details safely
                 const jobTitle = job.title || "No title available";
-                const company = job.company_name || "N/A";
+                const company = job.company || "N/A";
                 const location = job.location || "Location Not Specified";
-                const salary = job.salary || "Not Disclosed";
-                const jobUrl = job.job_url || "#";
+                const jobUrl = job.url || "#";
 
                 // ✅ Create job list item
                 const li = document.createElement("li");
@@ -82,7 +73,6 @@ async function fetchJobs() {
                     <strong>Job Title:</strong> ${jobTitle}<br>
                     <strong>Company:</strong> ${company}<br>
                     <strong>Location:</strong> ${location}<br>
-                    <strong>Salary:</strong> ${salary}<br>
                     <a href="${jobUrl}" target="_blank">🔗 View Job</a>
                 `;
                 jobList.appendChild(li);
