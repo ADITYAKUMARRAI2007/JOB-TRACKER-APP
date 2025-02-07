@@ -37,6 +37,8 @@ document.addEventListener("DOMContentLoaded", () => {
 
 // API Key provided by the user
 const API_KEY = "292b9e5d13655f0e6e05600ccbfbe4ac8fc38ab9834526fbb19166310a556fc2";
+
+// Function to fetch job listings from API
 async function fetchJobs() {
     const jobList = document.getElementById("job-list");
 
@@ -45,30 +47,31 @@ async function fetchJobs() {
         return;
     }
 
-    jobList.innerHTML = '<li class="loading">Fetching jobs... ⏳</li>';
+    jobList.innerHTML = '<li class="loading">Fetching jobs... ⏳</li>'; // Loading message
 
-    const url = "https://api.apijobs.dev/v1/job/search"; // API endpoint
+    const url = "https://api.apijobs.dev/v1/job/search"; // API endpoint for job listings
 
     const options = {
         method: "POST",
         headers: {
-            "apikey": API_KEY, // Your API key here
+            "apikey": API_KEY,
             "Content-Type": "application/json"
         },
         body: JSON.stringify({
-            q: "developer" // You can try changing this to a more common term
+            q: "developer" // Search query for developer jobs
         })
     };
 
     try {
+        // Fetch job listings
         const response = await fetch(url, options);
         const data = await response.json();
-        console.log("API Response:", data); // Log the full response
+        console.log("API Response:", data); // Log the full API response
 
-        // Check if the data contains job listings
+        // Check if jobs are returned in the API response
         if (data && data.jobs && data.jobs.length > 0) {
             const jobs = data.jobs;
-            jobList.innerHTML = '';  // Clear loading text
+            jobList.innerHTML = '';  // Clear the loading message
 
             // Display job listings
             jobs.forEach(job => {
@@ -80,16 +83,18 @@ async function fetchJobs() {
                     <a href="${job.url}" target="_blank">View Job</a>
                     <button class="apply-btn" data-job-id="${job.id}">Apply</button>
                 `;
-                jobList.appendChild(jobItem);
+                jobList.appendChild(jobItem); // Add each job to the job-list
             });
         } else {
-            jobList.innerHTML = '<li>No jobs found for your search criteria.</li>';
+            jobList.innerHTML = '<li>No jobs found for your search criteria.</li>'; // Handle no jobs found
         }
     } catch (error) {
+        // Handle errors and display a friendly message
         jobList.innerHTML = '<li>Error fetching jobs. Please try again later.</li>';
         console.error("Error fetching jobs:", error);
     }
 }
+
 
 
 // Add job to Kanban Board
