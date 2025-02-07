@@ -1,16 +1,13 @@
 document.addEventListener("DOMContentLoaded", () => {
-    // Ensure the user is authenticated
     if (!localStorage.getItem("user")) {
-        window.location.href = "index.html"; // Redirect to login if not authenticated
+        window.location.href = "index.html";
     }
 
-    // Logout functionality
     document.getElementById("logout-btn").addEventListener("click", () => {
         localStorage.removeItem("user");
-        window.location.href = "index.html"; // Redirect to login
+        window.location.href = "index.html";
     });
 
-    // Fetch and display jobs
     fetchJobs();
 });
 
@@ -27,7 +24,7 @@ async function fetchJobs() {
             },
             body: JSON.stringify({
                 "page": 0,
-                "limit": 20,  
+                "limit": 10,
                 "order_by": [{ "desc": true, "field": "date_posted" }],
                 "job_country_code_or": ["IN"],
                 "posted_at_max_age_days": 30,
@@ -41,7 +38,7 @@ async function fetchJobs() {
         }
 
         const data = await response.json();
-        console.log("Full API Response:", data);  // Debug: Check correct job title field
+        console.log("Full API Response:", data);  // ✅ Print entire API response
 
         const jobList = document.getElementById("job-list");
         if (!jobList) {
@@ -53,13 +50,14 @@ async function fetchJobs() {
 
         if (data.data && data.data.length > 0) { 
             data.data.forEach(job => {
-                console.log("Job Data:", job);  // Debug each job entry
+                console.log("Job Data:", job);  // ✅ Print each job object
 
-                const jobTitle = job.job_title || job.name || "No title available";  // ✅ Try different fields
+                // 🔍 Find the correct job title field
+                const jobTitle = job.job_title || job.name || job.title || job.position || "No title available";
 
                 const li = document.createElement("li");
                 li.innerHTML = `
-                    <strong>Job Title: ${jobTitle}</strong><br>
+                    <strong>Job Title:</strong> ${jobTitle}<br>
                     <strong>Company:</strong> ${job.company_name || "N/A"}<br>
                     <strong>Location:</strong> ${job.location || "Not specified"}<br>
                     <strong>Salary:</strong> ${job.salary || "Not disclosed"}<br>
