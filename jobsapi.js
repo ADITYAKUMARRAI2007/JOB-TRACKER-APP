@@ -1,3 +1,25 @@
+document.addEventListener("DOMContentLoaded", async () => {
+    // ✅ Ensure user authentication
+    if (!localStorage.getItem("user")) {
+        window.location.href = "index.html";
+        return;
+    }
+
+    // ✅ Safe logout handling
+    const logoutBtn = document.getElementById("logout-btn");
+    if (logoutBtn) {
+        logoutBtn.addEventListener("click", () => {
+            localStorage.removeItem("user");
+            window.location.href = "index.html";
+        });
+    }
+
+    // ✅ Fetch jobs on page load
+    await fetchJobs();
+});
+
+// ✅ Replace with your actual API key
+const API_KEY = "292b9e5d13655f0e6e05600ccbfbe4ac8fc38ab9834526fbb19166310a556fc2";
 async function fetchJobs() {
     const jobList = document.getElementById("job-list");
 
