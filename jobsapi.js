@@ -9,6 +9,8 @@ document.addEventListener("DOMContentLoaded", () => {
     });
 
     fetchJobs();
+    gsap.from("header", { duration: 1, y: -50, opacity: 0, ease: "bounce.out" });
+    gsap.from("button", { duration: 1, scale: 0, delay: 0.5, ease: "elastic.out(1, 0.3)" });
 });
 
 const API_KEY = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiJhZGl0eWFyYWkwNDAxMjAwN0BnbWFpbC5jb20iLCJwZXJtaXNzaW9ucyI6InVzZXIifQ.tN9FVZPfqQJvk2fNb8Z9wVBIe2eMDIk1YKtt17uYX-o";
