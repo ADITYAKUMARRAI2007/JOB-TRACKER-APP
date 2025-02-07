@@ -1,23 +1,38 @@
 <!DOCTYPE html>
 <html lang="en">
-  <head>
+<head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Dashboard</title>
-    <link rel="stylesheet" href="stylesdash.css">
-  </head>
-  <body>
-    <h2>Welcome to the Job Tracker Dashboard</h2>
+    <title>Job Tracker</title>
+    <link rel="stylesheet" href="styles.css">
+</head>
+<body>
 
-    <div class="dashboard-container">
-      <button id="logout-btn">Logout</button>
+    <h1>Job Application Tracker</h1>
 
-      <h3>Job List</h3>
-      <ul class="job-list" id="job-list">
-        <!-- Job listings will be dynamically injected here -->
-      </ul>
+    <button id="logout-btn">Logout</button>
+
+    <ul id="job-list"></ul>
+
+    <h2>Job Application Kanban Board</h2>
+    <div class="kanban">
+        <div class="column" id="applied">
+            <h3>Applied</h3>
+            <ul class="kanban-list"></ul>
+        </div>
+        <div class="column" id="interview">
+            <h3>Interview</h3>
+            <ul class="kanban-list"></ul>
+        </div>
+        <div class="column" id="offer">
+            <h3>Offer</h3>
+            <ul class="kanban-list"></ul>
+        </div>
     </div>
 
-    <script src="jobsapi.js"></script>
-  </body>
+    <h2>Job Statistics</h2>
+    <p>Applications Submitted: <span id="applications-count">0</span></p>
+    
+    <script src="script.js"></script>
+</body>
 </html>
