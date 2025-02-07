@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Job Tracker</title>
+    <title>Job Application Tracker</title>
     <link rel="stylesheet" href="styles.css">
 </head>
 <body>
@@ -13,35 +13,42 @@
         <button id="logout-btn">Logout</button>
     </header>
 
-    <!-- ✅ Job Listings Section -->
-    <section id="job-section">
-        <h2>Available Jobs</h2>
-        <ul id="job-list"></ul>
-    </section>
+    <main>
+        <!-- ✅ Job Listings Section -->
+        <section id="job-section">
+            <h2>Find Jobs</h2>
+            <ul id="job-list"></ul>
+        </section>
 
-    <!-- ✅ Kanban Board -->
-    <section id="kanban-board">
-        <h2>Job Application Progress</h2>
-        <div class="kanban-container">
-            <div class="kanban-column" id="applied">
-                <h3>Applied (<span id="applied-count">0</span>)</h3>
+        <!-- ✅ Kanban Board -->
+        <section id="kanban-board">
+            <h2>Application Progress</h2>
+            <div class="kanban-container">
+                <div class="kanban-column" id="applied">
+                    <h3>Applied (<span id="applied-count">0</span>)</h3>
+                    <div class="kanban-items"></div>
+                </div>
+                <div class="kanban-column" id="interview">
+                    <h3>Interview (<span id="interview-count">0</span>)</h3>
+                    <div class="kanban-items"></div>
+                </div>
+                <div class="kanban-column" id="offer">
+                    <h3>Offer (<span id="offer-count">0</span>)</h3>
+                    <div class="kanban-items"></div>
+                </div>
             </div>
-            <div class="kanban-column" id="interview">
-                <h3>Interview (<span id="interview-count">0</span>)</h3>
-            </div>
-            <div class="kanban-column" id="offer">
-                <h3>Offer (<span id="offer-count">0</span>)</h3>
-            </div>
-        </div>
-    </section>
+        </section>
 
-    <!-- ✅ Statistics Section -->
-    <section id="stats">
-        <h2>Job Statistics</h2>
-        <p>Total Applications: <span id="total-applications">0</span></p>
-        <p>Interviews Scheduled: <span id="total-interviews">0</span></p>
-        <p>Offers Received: <span id="total-offers">0</span></p>
-    </section>
+        <!-- ✅ Statistics Section -->
+        <section id="stats">
+            <h2>Job Statistics</h2>
+            <div class="stats-container">
+                <p>Total Applications: <span id="total-applications">0</span></p>
+                <p>Interviews Scheduled: <span id="total-interviews">0</span></p>
+                <p>Offers Received: <span id="total-offers">0</span></p>
+            </div>
+        </section>
+    </main>
 
     <!-- ✅ Include JavaScript -->
     <script src="jobsapi.js"></script>
