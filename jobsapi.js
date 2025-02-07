@@ -11,7 +11,7 @@ document.addEventListener("DOMContentLoaded", () => {
     fetchJobs();
 });
 
-const API_KEY = "your_actual_jsearch_api_key"; // Replace with your JSearch API key
+const API_KEY = "fb6ec35829msh58603dad7166720p1f2d26jsn00ae6aaa89f4"; // Replace with your JSearch API key
 const API_URL = "https://jsearch.p.rapidapi.com/search?query=developer%20jobs%20in%20chicago&page=1&num_pages=1&country=us&date_posted=all";
 
 async function fetchJobs() {
