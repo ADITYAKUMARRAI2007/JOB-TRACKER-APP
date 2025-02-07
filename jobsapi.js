@@ -9,72 +9,57 @@ document.addEventListener("DOMContentLoaded", () => {
     });
 
     fetchJobs();
-});  // ✅ Added missing closing bracket for DOMContentLoaded
-
-const API_KEY = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiJhZGl0eWFyYWkwNDAxMjAwN0BnbWFpbC5jb20iLCJwZXJtaXNzaW9ucyI6InVzZXIifQ.tN9FVZPfqQJvk2fNb8Z9wVBIe2eMDIk1YKtt17uYX-o";
+});
 
 async function fetchJobs() {
-    try {
-        const response = await fetch("https://api.theirstack.com/v1/jobs/search", {
-            method: "POST",
-            headers: {
-                "Accept": "application/json",
-                "Content-Type": "application/json",
-                "Authorization": `Bearer ${API_KEY}`
-            },
-            body: JSON.stringify({
-                "page": 0,
-                "limit": 10,
-                "order_by": [{ "desc": true, "field": "date_posted" }],
-                "job_country_code_or": ["IN"],
-                "posted_at_max_age_days": 30,
-                "include_total_results": true,
-                "blur_company_data": false
-            })
-        });
-
-        if (!response.ok) {
-            throw new Error(`HTTP error! Status: ${response.status}`);
-        }
-
-        const data = await response.json();
-        console.log("Full API Response:", data);  // ✅ Print entire API response
-
-        const jobList = document.getElementById("job-list");
-        if (!jobList) {
-            console.error("Error: job-list element not found in HTML.");
-            return;
-        }
-
-        jobList.innerHTML = "";
-
-        if (data.data && data.data.length > 0) { 
-            data.data.forEach(job => {
-                console.log("Job Data:", job);  // ✅ Print each job object
-
-                // 🔍 Find the correct job title field
-                const jobTitle = job.job_title || job.name || job.title || job.position || "No title available";
-
-                const li = document.createElement("li");
-                li.innerHTML = `
-                    <strong>Job Title:</strong> ${jobTitle}<br>
-                    <strong>Company:</strong> ${job.company_name || "N/A"}<br>
-                    <strong>Location:</strong> ${job.location || "Not specified"}<br>
-                    <strong>Salary:</strong> ${job.salary || "Not disclosed"}<br>
-                    <a href="${job.url}" target="_blank">🔗 View Job</a>
-                `;
-                jobList.appendChild(li);
-            });
-        } else {
-            console.warn("No jobs found in API response.");
-            jobList.innerHTML = "<li>No jobs found. Try adjusting the filters.</li>";
-        }
-
-    } catch (error) {
-        console.error("Error fetching job data:", error);
-        const jobList = document.getElementById("job-list");
-        if (jobList) {
-            jobList.innerHTML = "<li>Error fetching job data. Check console.</li>";
-        }
+    const jobList = document.getElementById("job-list");
+    if (!jobList) {
+        console.error("Error: job-list element not found in HTML.");
+        return;
     }
+    jobList.innerHTML = '<li class="loading">Fetching jobs... ⏳</li>';
+
+    const xhr = new XMLHttpRequest();
+    xhr.withCredentials = true;
+
+    xhr.addEventListener("readystatechange", function () {
+        if (this.readyState === this.DONE) {
+            try {
+                const data = JSON.parse(this.responseText);
+                console.log("Full API Response:", data);
+                jobList.innerHTML = "";
+
+                if (data && data.results && data.results.length > 0) {
+                    data.results.forEach(job => {
+                        const jobTitle = job.job_title || "No title available";
+                        const company = job.company_name || "N/A";
+                        const location = job.location || "Not specified";
+                        const salary = job.salary || "Not disclosed";
+                        const jobUrl = job.url || "#";
+
+                        const li = document.createElement("li");
+                        li.innerHTML = `
+                            <strong>Job Title:</strong> ${jobTitle}<br>
+                            <strong>Company:</strong> ${company}<br>
+                            <strong>Location:</strong> ${location}<br>
+                            <strong>Salary:</strong> ${salary}<br>
+                            <a href="${jobUrl}" target="_blank">🔗 View Job</a>
+                        `;
+                        jobList.appendChild(li);
+                    });
+                } else {
+                    jobList.innerHTML = "<li>No jobs found. Try adjusting the filters.</li>";
+                }
+            } catch (error) {
+                console.error("Error parsing job data:", error);
+                jobList.innerHTML = "<li>Error fetching job data. Check console.</li>";
+            }
+        }
+    });
+
+    xhr.open("GET", "https://indeed-indeed.p.rapidapi.com/apigetjobs?v=2&format=json");
+    xhr.setRequestHeader("x-rapidapi-key", "fb6ec35829msh58603dad7166720p1f2d26jsn00ae6aaa89f4");
+    xhr.setRequestHeader("x-rapidapi-host", "indeed-indeed.p.rapidapi.com");
+
+    xhr.send();
 }
