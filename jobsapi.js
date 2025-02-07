@@ -48,32 +48,38 @@ async function fetchJobs() {
 
     jobList.innerHTML = '<li class="loading">Fetching jobs... ⏳</li>';
 
-    const url = "https://api.apijobs.dev/v1/job/search";
+    const url = "https://api.apijobs.dev/v1/job/search"; // Ensure the endpoint URL is correct
     const options = {
         method: "POST",
         headers: {
-            "apikey": API_KEY,
+            "apikey": API_KEY,  // Ensure the API key is correct
             "Content-Type": "application/json"
         },
         body: JSON.stringify({
-            query: "developer",
-            location: "remote",
-            full_time: true,
+            query: "developer",  // Ensure 'query' is a valid job type
+            location: "remote",  // Ensure location is supported
+            full_time: true,     // Ensure full_time is a valid parameter
             page: 1,
             per_page: 5
         })
     };
 
+    console.log("Request body:", options.body); // Log the request body to check if it's correctly formatted
+
     try {
         const response = await fetch(url, options);
-        const data = await response.json();
+        
+        if (!response.ok) {
+            throw new Error(`Error: ${response.status} ${response.statusText}`);
+        }
 
+        const data = await response.json();
+        
         // Check if the data contains job listings
         if (data && data.jobs && data.jobs.length > 0) {
             const jobs = data.jobs;
-            jobList.innerHTML = '';  // Clear loading text
+            jobList.innerHTML = ''; // Clear loading text
 
-            // Display job listings
             jobs.forEach(job => {
                 const jobItem = document.createElement('li');
                 jobItem.innerHTML = `
@@ -89,6 +95,7 @@ async function fetchJobs() {
                 const applyBtn = jobItem.querySelector('.apply-btn');
                 applyBtn.addEventListener('click', () => {
                     addJobToKanban(job);
+                    updateStats('total-apps', 1);  // Increment Total Applications
                 });
             });
         } else {
@@ -167,4 +174,12 @@ function updateKanbanCounts() {
     appliedCount.textContent = document.getElementById("applied").querySelector('.kanban-items').children.length;
     interviewCount.textContent = document.getElementById("interview").querySelector('.kanban-items').children.length;
     offerCount.textContent = document.getElementById("offer").querySelector('.kanban-items').children.length;
+}
+
+// Update stats display (e.g., Total Applications)
+function updateStats(id, increment) {
+    const statElement = document.getElementById(id);
+    if (statElement) {
+        statElement.textContent = parseInt(statElement.textContent) + increment;
+    }
 }
