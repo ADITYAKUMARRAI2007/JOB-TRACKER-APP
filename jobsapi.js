@@ -86,6 +86,14 @@ async function fetchJobs() {
                     <button class="apply-btn" data-job-id="${job.id}">Apply</button>
                 `;
                 jobList.appendChild(jobItem); // Add each job to the job-list
+                
+                // Add an event listener to the apply button
+                const applyBtn = jobItem.querySelector('.apply-btn');
+                if (applyBtn) {
+                    applyBtn.addEventListener('click', function() {
+                        applyForJob(job);  // Call the function to apply
+                    });
+                }
             });
         } else {
             jobList.innerHTML = '<li>No jobs found for your search criteria.</li>';
@@ -96,6 +104,17 @@ async function fetchJobs() {
     }
 }
 
+// Function to handle job application
+function applyForJob(job) {
+    // Add job to Kanban Board (you can modify this logic if needed)
+    console.log("Applying for job:", job.title);
+    
+    // Example: Add the job to the Kanban board (or other actions)
+    addJobToKanban(job);
+
+    // Optionally, you can show a success message or add other logic for applying
+    alert(`You have applied for the job: ${job.title}`);
+}
 
 
 
