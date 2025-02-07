@@ -27,10 +27,10 @@ async function fetchJobs() {
             },
             body: JSON.stringify({
                 "page": 0,
-                "limit": 20,  // Fetch more job listings
+                "limit": 20,  
                 "order_by": [{ "desc": true, "field": "date_posted" }],
                 "job_country_code_or": ["IN"],
-                "posted_at_max_age_days": 30, // Increase to 30 days for more listings
+                "posted_at_max_age_days": 30,
                 "include_total_results": true,
                 "blur_company_data": false
             })
@@ -41,9 +41,8 @@ async function fetchJobs() {
         }
 
         const data = await response.json();
-        console.log("Full API Response:", data); // Debugging: Check the full response
+        console.log("Full API Response:", data);  // Debug: Check correct job title field
 
-        // Ensure job list container exists
         const jobList = document.getElementById("job-list");
         if (!jobList) {
             console.error("Error: job-list element not found in HTML.");
@@ -52,12 +51,15 @@ async function fetchJobs() {
 
         jobList.innerHTML = "";
 
-        // ✅ Display job details correctly
         if (data.data && data.data.length > 0) { 
             data.data.forEach(job => {
+                console.log("Job Data:", job);  // Debug each job entry
+
+                const jobTitle = job.job_title || job.name || "No title available";  // ✅ Try different fields
+
                 const li = document.createElement("li");
                 li.innerHTML = `
-                    <strong>Job Title: ${job.title || "No title available"}</strong><br>
+                    <strong>Job Title: ${jobTitle}</strong><br>
                     <strong>Company:</strong> ${job.company_name || "N/A"}<br>
                     <strong>Location:</strong> ${job.location || "Not specified"}<br>
                     <strong>Salary:</strong> ${job.salary || "Not disclosed"}<br>
@@ -72,8 +74,6 @@ async function fetchJobs() {
 
     } catch (error) {
         console.error("Error fetching job data:", error);
-
-        // Prevent error if job-list is missing
         const jobList = document.getElementById("job-list");
         if (jobList) {
             jobList.innerHTML = "<li>Error fetching job data. Check console.</li>";
