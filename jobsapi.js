@@ -1,40 +1,27 @@
 document.addEventListener("DOMContentLoaded", () => {
-    // Redirect to login if user is not authenticated
     if (!localStorage.getItem("user")) {
         window.location.href = "index.html";
     }
 
-    // Logout functionality
     document.getElementById("logout-btn").addEventListener("click", () => {
         localStorage.removeItem("user");
         window.location.href = "index.html";
     });
 
-    // Fetch jobs on page load
     fetchJobs();
+
+    
+   
 });
 
-const API_KEY = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiJhZGl0eWFyYWkwNDAxMjAwN0BnbWFpbC5jb20iLCJwZXJtaXNzaW9ucyI6InVzZXIifQ.tN9FVZPfqQJvk2fNb8Z9wVBIe2eMDIk1YKtt17uYX-o";
-
 async function fetchJobs() {
-    const jobList = document.getElementById("job-list");
-    
-    if (!jobList) {
-        console.error("Error: job-list element not found in HTML.");
-        return;
-    }
-
-    // Show loading message before fetching
-    jobList.innerHTML = '<li class="loading">Fetching jobs... ⏳</li>';
-
-    
     try {
         const response = await fetch("https://api.theirstack.com/v1/jobs/search", {
             method: "POST",
             headers: {
                 "Accept": "application/json",
                 "Content-Type": "application/json",
-                "Authorization": `Bearer ${API_KEY}`
+                "Authorization": `Bearer YOUR_API_KEY_HERE`
             },
             body: JSON.stringify({
                 "page": 0,
@@ -54,41 +41,39 @@ async function fetchJobs() {
         const data = await response.json();
         console.log("Full API Response:", data);
 
-        jobList.innerHTML = ""; // Clear the loading text
-
-        if (data.data && data.data.length > 0) { 
-            data.data.forEach(job => {
-                console.log("Job Data:", job);
-
-                const jobTitle = job.job_title || job.name || job.title || job.position || "No title available";
-                const salary = job.salary ? `<span class="salary">💰 ${job.salary}</span>` : "<span class='salary'>Salary: Not disclosed</span>";
-                const company = job.company_name ? `<span class="company">🏢 ${job.company_name}</span>` : "<span class='company'>Company: N/A</span>";
-                const location = job.location ? `<span class="location">📍 ${job.location}</span>` : "<span class='location'>Location: Not specified</span>";
-
-                const li = document.createElement("li");
-                li.classList.add("job-item");
-                li.innerHTML = `
-                    <h3>${jobTitle}</h3>
-                    ${company}
-                    ${location}
-                    ${salary}
-                    <br>
-                    <a href="${job.url}" target="_blank" class="apply-btn">🔗 View Job</a>
-                `;
-
-                jobList.appendChild(li);
-
-                // Fade-in animation for each job item
-                setTimeout(() => {
-                    li.classList.add("show");
-                }, 100);
-            });
-        } else {
-            jobList.innerHTML = "<li class='no-jobs'>🚫 No jobs found. Try adjusting the filters.</li>";
+        const jobList = document.getElementById("job-list");
+        if (!jobList) {
+            console.error("Error: job-list element not found in HTML.");
+            return;
         }
 
+        jobList.innerHTML = "";
+
+        if (data.data && data.data.length > 0) {
+            data.data.forEach((job, index) => {
+                const jobTitle = job.job_title || job.name || job.title || job.position || "No title available";
+
+                const li = document.createElement("li");
+                li.innerHTML = `
+                    <strong>Job Title:</strong> ${jobTitle}<br>
+                    <strong>Company:</strong> ${job.company_name || "N/A"}<br>
+                    <strong>Location:</strong> ${job.location || "Not specified"}<br>
+                    <strong>Salary:</strong> ${job.salary || "Not disclosed"}<br>
+                    <a href="${job.url}" target="_blank">🔗 View Job</a>
+                `;
+                jobList.appendChild(li);
+
+               
+            });
+        } else {
+            console.warn("No jobs found in API response.");
+            jobList.innerHTML = "<li>No jobs found. Try adjusting the filters.</li>";
+        }
     } catch (error) {
         console.error("Error fetching job data:", error);
-        jobList.innerHTML = "<li class='error'>❌ Error fetching jobs. Please try again later.</li>";
+        const jobList = document.getElementById("job-list");
+        if (jobList) {
+            jobList.innerHTML = "<li>Error fetching job data. Check console.</li>";
+        }
     }
 }
