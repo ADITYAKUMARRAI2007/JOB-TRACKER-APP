@@ -4,6 +4,7 @@ document.addEventListener("DOMContentLoaded", () => {
         window.location.href = "index.html";
         return;
     }
+    
 
     // ✅ Safe logout handling
     const logoutBtn = document.getElementById("logout-btn");
