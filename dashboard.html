@@ -7,50 +7,78 @@
     <link rel="stylesheet" href="styles.css">
 </head>
 <body>
-    <!-- ✅ Header Section -->
-    <header>
-        <h1>Job Application Tracker</h1>
-        <button id="logout-btn">Logout</button>
-    </header>
 
-    <main>
-        <!-- ✅ Job Listings Section -->
-        <section id="job-section">
-            <h2>Find Jobs</h2>
-            <ul id="job-list"></ul>
-        </section>
+    <div class="container">
+        <!-- Sidebar -->
+        <nav class="sidebar">
+            <h2>Job Tracker</h2>
+            <ul>
+                <li><a href="#">📊 Dashboard</a></li>
+                <li><a href="#">📋 Applications</a></li>
+                <li><a href="#">📅 Schedule Interview</a></li>
+                <li><a href="#">⚙️ Settings</a></li>
+                <li><a href="#" id="logout-btn">🚪 Logout</a></li>
+            </ul>
+        </nav>
 
-        <!-- ✅ Kanban Board -->
-        <section id="kanban-board">
-            <h2>Application Progress</h2>
-            <div class="kanban-container">
-                <div class="kanban-column" id="applied">
-                    <h3>Applied (<span id="applied-count">0</span>)</h3>
-                    <div class="kanban-items"></div>
+        <!-- Main Content -->
+        <main class="content">
+            <header>
+                <h1>Dashboard</h1>
+            </header>
+
+            <section class="stats">
+                <div class="stat-card">
+                    <h3>📌 Total Applications</h3>
+                    <p id="total-apps">0</p>
                 </div>
-                <div class="kanban-column" id="interview">
-                    <h3>Interview (<span id="interview-count">0</span>)</h3>
-                    <div class="kanban-items"></div>
+                <div class="stat-card">
+                    <h3>📞 Interviews Scheduled</h3>
+                    <p id="total-interviews">0</p>
                 </div>
-                <div class="kanban-column" id="offer">
-                    <h3>Offer (<span id="offer-count">0</span>)</h3>
-                    <div class="kanban-items"></div>
+                <div class="stat-card">
+                    <h3>🎉 Offers Received</h3>
+                    <p id="total-offers">0</p>
                 </div>
-            </div>
-        </section>
+            </section>
 
-        <!-- ✅ Statistics Section -->
-        <section id="stats">
-            <h2>Job Statistics</h2>
-            <div class="stats-container">
-                <p>Total Applications: <span id="total-applications">0</span></p>
-                <p>Interviews Scheduled: <span id="total-interviews">0</span></p>
-                <p>Offers Received: <span id="total-offers">0</span></p>
-            </div>
-        </section>
-    </main>
+            <!-- Google Calendar Integration -->
+            <section class="schedule">
+                <h2>Schedule an Interview</h2>
+                <form id="calendar-form">
+                    <input type="text" id="event-title" placeholder="Event Title" required>
+                    <input type="datetime-local" id="event-time" required>
+                    <button type="submit">📅 Add to Google Calendar</button>
+                </form>
+            </section>
 
-    <!-- ✅ Include JavaScript -->
-    <script src="jobsapi.js"></script>
+            <!-- Job Listings Section -->
+            <section id="job-section">
+                <h2>Find Jobs</h2>
+                <ul id="job-list"></ul>
+            </section>
+
+            <!-- Kanban Board -->
+            <section id="kanban-board">
+                <h2>Application Progress</h2>
+                <div class="kanban-container">
+                    <div class="kanban-column" id="applied">
+                        <h3>Applied (<span id="applied-count">0</span>)</h3>
+                        <div class="kanban-items"></div>
+                    </div>
+                    <div class="kanban-column" id="interview">
+                        <h3>Interview (<span id="interview-count">0</span>)</h3>
+                        <div class="kanban-items"></div>
+                    </div>
+                    <div class="kanban-column" id="offer">
+                        <h3>Offer (<span id="offer-count">0</span>)</h3>
+                        <div class="kanban-items"></div>
+                    </div>
+                </div>
+            </section>
+        </main>
+    </div>
+
+    <script src="script.js"></script>
 </body>
 </html>
