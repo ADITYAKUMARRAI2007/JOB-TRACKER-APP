@@ -10,14 +10,15 @@ document.addEventListener("DOMContentLoaded", () => {
         window.location.href = "index.html"; // Redirect to login
     });
 
-    // Fetch and display jobs
-    fetchJobs();
+    // Fetch and display companies
+    searchCompanies();
 });
-const API_KEY = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiJhZGl0eWFyYWkwNDAxMjAwN0BnbWFpbC5jb20iLCJwZXJtaXNzaW9ucyI6InVzZXIifQ.tN9FVZPfqQJvk2fNb8Z9wVBIe2eMDIk1YKtt17uYX-o";
+
+const API_KEY = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiJhZGl0eWFyYWkwNDAxMjAwN0BnbWFpbC5jb20iLCJwZXJtaXNzaW9ucyI6InVzZXIifQ.tN9FVZPfqQJvk2b8Z9wVBIe2eMDIk1YKtt17uYX-o";
 
 async function searchCompanies() {
     try {
-        const response = await fetch("https://api.theirstack.com/v1/companies/search", {
+        const response = await fetch("https://api.theirstack.com/v1/companies/search", {  // ✅ Correct endpoint
             method: "POST",
             headers: {
                 "Accept": "application/json",
@@ -28,9 +29,7 @@ async function searchCompanies() {
                 "page": 0,
                 "limit": 10,
                 "order_by": [
-                    { "desc": true, "field": "confidence" },
-                    { "desc": true, "field": "jobs" },
-                    { "desc": true, "field": "num_jobs" }
+                    { "desc": true, "field": "num_jobs" } // ✅ Use correct field
                 ],
                 "company_country_code_or": ["IN"],
                 "include_total_results": false,
@@ -68,6 +67,3 @@ async function searchCompanies() {
         document.getElementById("company-list").innerHTML = "<li>Error fetching company data.</li>";
     }
 }
-
-// Call the function when needed
-searchCompanies();
