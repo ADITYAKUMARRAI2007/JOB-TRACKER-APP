@@ -18,8 +18,8 @@ document.addEventListener("DOMContentLoaded", () => {
     fetchJobs();
 });
 
-// ✅ Replace with your actual API key (consider hiding it in a backend)
-const API_KEY = "fb6ec35829msh58603dad7166720p1f2d26jsn00ae6aaa89f4"; 
+// ✅ Replace with backend proxy or hide in environment variable
+const API_KEY = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiJhZGl0eWFyYWkwNDAxMjAwN0BnbWFpbC5jb20iLCJwZXJtaXNzaW9ucyI6InVzZXIifQ.tN9FVZPfqQJvk2fNb8Z9wVBIe2eMDIk1YKtt17uYX-o"; 
 
 async function fetchJobs() {
     const jobList = document.getElementById("job-list");
@@ -29,16 +29,26 @@ async function fetchJobs() {
         return;
     }
 
-    // ✅ Show a loading message while fetching data
+    // ✅ Show loading state
     jobList.innerHTML = '<li class="loading">Fetching jobs... ⏳</li>';
 
-    const url = "https://jsearch.p.rapidapi.com/search?query=developer%20jobs%20in%20chicago&page=1&num_pages=1&country=us&date_posted=all";
+    const url = "https://api.theirstack.com/v1/jobs/search";
     const options = {
-        method: "GET",
+        method: "POST",
         headers: {
-            "x-rapidapi-key": API_KEY,
-            "x-rapidapi-host": "jsearch.p.rapidapi.com"
-        }
+            "Accept": "application/json",
+            "Content-Type": "application/json",
+            "Authorization": `Bearer ${API_KEY}`
+        },
+        body: JSON.stringify({
+            page: 0,
+            limit: 10,
+            order_by: [{ desc: true, field: "date_posted" }],
+            include_total_results: false,
+            blur_company_data: false,
+            job_country_code_or: ["IN"],  // Fetch jobs in India
+            posted_at_max_age_days: 15
+        })
     };
 
     try {
@@ -54,18 +64,18 @@ async function fetchJobs() {
         // ✅ Clear previous job results
         jobList.innerHTML = "";
 
-        if (data.data && data.data.length > 0) { 
-            data.data.forEach(job => {
+        if (data.jobs && data.jobs.length > 0) { 
+            data.jobs.forEach(job => {
                 console.log("Job Data:", job);
 
                 // ✅ Extract job details safely
-                const jobTitle = job.job_title || "No title available";
-                const company = job.employer_name || "N/A";
-                const location = job.job_city || "Location Not Specified";
+                const jobTitle = job.title || "No title available";
+                const company = job.company_name || "N/A";
+                const location = job.location || "Location Not Specified";
                 const salary = job.salary || "Not Disclosed";
-                const jobUrl = job.job_apply_link || "#";
+                const jobUrl = job.job_url || "#";
 
-                // ✅ Create a job list item
+                // ✅ Create job list item
                 const li = document.createElement("li");
                 li.innerHTML = `
                     <strong>Job Title:</strong> ${jobTitle}<br>
