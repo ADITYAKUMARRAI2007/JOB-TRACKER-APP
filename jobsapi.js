@@ -1,20 +1,25 @@
 document.addEventListener("DOMContentLoaded", () => {
-    // Redirect to login if user is not authenticated
+    // ✅ Ensure user authentication
     if (!localStorage.getItem("user")) {
         window.location.href = "index.html";
+        return;
     }
 
-    // Logout functionality
-    document.getElementById("logout-btn").addEventListener("click", () => {
-        localStorage.removeItem("user");
-        window.location.href = "index.html";
-    });
+    // ✅ Safe logout handling
+    const logoutBtn = document.getElementById("logout-btn");
+    if (logoutBtn) {
+        logoutBtn.addEventListener("click", () => {
+            localStorage.removeItem("user");
+            window.location.href = "index.html";
+        });
+    }
 
-    // Fetch jobs on page load
+    // ✅ Fetch jobs on page load
     fetchJobs();
 });
 
-const API_KEY = "fb6ec35829msh58603dad7166720p1f2d26jsn00ae6aaa89f4"; // ✅ Replace with your actual RapidAPI key
+// ✅ Replace with your actual API key (consider hiding it in a backend)
+const API_KEY = "fb6ec35829msh58603dad7166720p1f2d26jsn00ae6aaa89f4"; 
 
 async function fetchJobs() {
     const jobList = document.getElementById("job-list");
@@ -24,7 +29,7 @@ async function fetchJobs() {
         return;
     }
 
-    // Show loading message before fetching
+    // ✅ Show a loading message while fetching data
     jobList.innerHTML = '<li class="loading">Fetching jobs... ⏳</li>';
 
     const url = "https://jsearch.p.rapidapi.com/search?query=developer%20jobs%20in%20chicago&page=1&num_pages=1&country=us&date_posted=all";
@@ -44,22 +49,23 @@ async function fetchJobs() {
         }
 
         const data = await response.json();
-        console.log("Full API Response:", data);  // ✅ Print entire API response
+        console.log("Full API Response:", data);
 
-        jobList.innerHTML = ""; // Clear previous results
+        // ✅ Clear previous job results
+        jobList.innerHTML = "";
 
         if (data.data && data.data.length > 0) { 
             data.data.forEach(job => {
-                console.log("Job Data:", job);  // ✅ Print each job object
+                console.log("Job Data:", job);
 
-                // 🔍 Extract job details
-                const jobTitle = job.job_title || job.name || job.title || job.position || "No title available";
+                // ✅ Extract job details safely
+                const jobTitle = job.job_title || "No title available";
                 const company = job.employer_name || "N/A";
                 const location = job.job_city || "Location Not Specified";
-                const salary = job.job_salary || "Not Disclosed";
+                const salary = job.salary || "Not Disclosed";
                 const jobUrl = job.job_apply_link || "#";
 
-                // Create job list item
+                // ✅ Create a job list item
                 const li = document.createElement("li");
                 li.innerHTML = `
                     <strong>Job Title:</strong> ${jobTitle}<br>
@@ -76,6 +82,6 @@ async function fetchJobs() {
         }
     } catch (error) {
         console.error("Error fetching job data:", error);
-        jobList.innerHTML = "<li>Error fetching job data. Check console.</li>";
+        jobList.innerHTML = `<li>Error fetching job data: ${error.message}. Check console.</li>`;
     }
 }
