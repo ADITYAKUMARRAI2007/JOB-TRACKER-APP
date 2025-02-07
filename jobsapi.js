@@ -13,7 +13,7 @@ document.addEventListener("DOMContentLoaded", () => {
     loadStats();
 });
 
-const API_KEY = "YOUR_API_KEY_HERE";
+const API_KEY = "292b9e5d13655f0e6e05600ccbfbe4ac8fc38ab9834526fbb19166310a556fc2";
 const jobList = document.getElementById("job-list");
 
 async function fetchJobs() {
