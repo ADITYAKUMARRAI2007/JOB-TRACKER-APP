@@ -27,13 +27,11 @@ async function fetchJobs() {
             },
             body: JSON.stringify({
                 "page": 0,
-                "limit": 10,
-                "order_by": [
-                    { "desc": true, "field": "date_posted" }
-                ],
+                "limit": 20,  // 🔹 Increased limit for more results
+                "order_by": [{ "desc": true, "field": "date_posted" }],
                 "job_country_code_or": ["IN"],
-                "posted_at_max_age_days": 15,
-                "include_total_results": false,
+                "posted_at_max_age_days": 30, // 🔹 Increased to 30 days for more job listings
+                "include_total_results": true,  // 🔹 Show total results count for debugging
                 "blur_company_data": false
             })
         });
@@ -43,10 +41,15 @@ async function fetchJobs() {
         }
 
         const data = await response.json();
-        console.log("Job Data:", data);
+        console.log("Full API Response:", data);  // 🔹 Debugging: Print full response
 
-        // Display job listings
+        // Get job list element
         const jobList = document.getElementById("job-list");
+        if (!jobList) {
+            console.error("Error: job-list element not found in HTML.");
+            return;
+        }
+
         jobList.innerHTML = "";
 
         if (data.jobs && data.jobs.length > 0) {
@@ -56,21 +59,23 @@ async function fetchJobs() {
                     <strong>${job.title}</strong><br>
                     Company: ${job.company || "N/A"}<br>
                     Location: ${job.location || "Not specified"}<br>
-                    Salary: ${job.salary || "Not disclosed"}
+                    Salary: ${job.salary || "Not disclosed"}<br>
+                    <a href="${job.url}" target="_blank">View Job</a> <!-- 🔹 Added job link -->
                 `;
                 jobList.appendChild(li);
             });
         } else {
-            jobList.innerHTML = "<li>No jobs found.</li>";
+            console.warn("No jobs found.");
+            jobList.innerHTML = "<li>No jobs found. Try changing the filters.</li>";
         }
 
     } catch (error) {
         console.error("Error fetching job data:", error);
 
-        // Prevent setting innerHTML when job-list is null
+        // Prevent setting innerHTML if job-list is missing
         const jobList = document.getElementById("job-list");
         if (jobList) {
-            jobList.innerHTML = "<li>Error fetching job data.</li>";
+            jobList.innerHTML = "<li>Error fetching job data. Check console.</li>";
         }
     }
 }
