@@ -37,7 +37,6 @@ document.addEventListener("DOMContentLoaded", () => {
 
 // Replace with your actual API key
 const API_KEY = "292b9e5d13655f0e6e05600ccbfbe4ac8fc38ab9834526fbb19166310a556fc2";
-
 async function fetchJobs() {
     const jobList = document.getElementById("job-list");
 
@@ -48,40 +47,33 @@ async function fetchJobs() {
 
     jobList.innerHTML = '<li class="loading">Fetching jobs... ⏳</li>';
 
-    const url = "https://api.apijobs.dev/v1/job/search"; // Ensure the endpoint URL is correct
+    const url = "https://api.apijobs.dev/v1/job/search"; // Ensure this is the correct URL
+
     const options = {
         method: "POST",
         headers: {
-            "apikey": API_KEY,  // Ensure the API key is correct
+            "apikey": API_KEY,
             "Content-Type": "application/json"
         },
         body: JSON.stringify({
-            query: "developer",  // Ensure 'query' is a valid job type
-            location: "remote",  // Ensure location is supported
-            full_time: true,     // Ensure full_time is a valid parameter
-            page: 1,
-            per_page: 5
+            keywords: "developer",  // Changed 'query' to 'keywords'
+            location: "remote",     // Verify if 'location' is supported
+            full_time: "true",      // Double check if 'full_time' accepts boolean or string
+            page: 1, 
+            results_per_page: 5    // Changed 'per_page' to 'results_per_page' as required by the API
         })
     };
 
-    console.log("Request body:", options.body); // Log the request body to check if it's correctly formatted
-
     try {
         const response = await fetch(url, options);
+        const data = await response.json();
 
-        // Log the full response for debugging
-        const responseData = await response.json();
-        console.log("API Response:", responseData);
+        // Check if the data contains job listings
+        if (data && data.jobs && data.jobs.length > 0) {
+            const jobs = data.jobs;
+            jobList.innerHTML = '';  // Clear loading text
 
-        if (!response.ok) {
-            throw new Error(`Error: ${response.status} ${response.statusText}`);
-        }
-
-        // If no jobs found, show an appropriate message
-        if (responseData && responseData.jobs && responseData.jobs.length > 0) {
-            const jobs = responseData.jobs;
-            jobList.innerHTML = ''; // Clear loading text
-
+            // Display job listings
             jobs.forEach(job => {
                 const jobItem = document.createElement('li');
                 jobItem.innerHTML = `
@@ -97,7 +89,6 @@ async function fetchJobs() {
                 const applyBtn = jobItem.querySelector('.apply-btn');
                 applyBtn.addEventListener('click', () => {
                     addJobToKanban(job);
-                    updateStats('total-apps', 1);  // Increment Total Applications
                 });
             });
         } else {
@@ -108,6 +99,7 @@ async function fetchJobs() {
         console.error("Error fetching jobs:", error);
     }
 }
+
 
 
 // Add job to Kanban Board
