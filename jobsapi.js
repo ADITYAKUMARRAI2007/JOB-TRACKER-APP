@@ -27,11 +27,11 @@ async function fetchJobs() {
             },
             body: JSON.stringify({
                 "page": 0,
-                "limit": 20,  // 🔹 Increased limit for more results
+                "limit": 20,  // Fetch more job listings
                 "order_by": [{ "desc": true, "field": "date_posted" }],
                 "job_country_code_or": ["IN"],
-                "posted_at_max_age_days": 30, // 🔹 Increased to 30 days for more job listings
-                "include_total_results": true,  // 🔹 Show total results count for debugging
+                "posted_at_max_age_days": 30, // Increase to 30 days for more listings
+                "include_total_results": true,
                 "blur_company_data": false
             })
         });
@@ -41,9 +41,9 @@ async function fetchJobs() {
         }
 
         const data = await response.json();
-        console.log("Full API Response:", data);  // 🔹 Debugging: Print full response
+        console.log("Full API Response:", data); // Debugging: Check the full response
 
-        // Get job list element
+        // Ensure job list container exists
         const jobList = document.getElementById("job-list");
         if (!jobList) {
             console.error("Error: job-list element not found in HTML.");
@@ -52,27 +52,28 @@ async function fetchJobs() {
 
         jobList.innerHTML = "";
 
-     if (data.data && data.data.length > 0) { // ✅ Correct key
-    data.data.forEach(job => {
-        const li = document.createElement("li");
-        li.innerHTML = `
-            <strong>${job.title}</strong><br>
-            Company: ${job.company || "N/A"}<br>
-            Location: ${job.location || "Not specified"}<br>
-            Salary: ${job.salary || "Not disclosed"}<br>
-            <a href="${job.url}" target="_blank">View Job</a>
-        `;
-        jobList.appendChild(li);
-    });
-} else {
-    console.warn("No jobs found in API response.");
-    jobList.innerHTML = "<li>No jobs found. Try changing the filters.</li>";
-}
+        // ✅ Display job details correctly
+        if (data.data && data.data.length > 0) { 
+            data.data.forEach(job => {
+                const li = document.createElement("li");
+                li.innerHTML = `
+                    <strong>Job Title: ${job.title || "No title available"}</strong><br>
+                    <strong>Company:</strong> ${job.company_name || "N/A"}<br>
+                    <strong>Location:</strong> ${job.location || "Not specified"}<br>
+                    <strong>Salary:</strong> ${job.salary || "Not disclosed"}<br>
+                    <a href="${job.url}" target="_blank">🔗 View Job</a>
+                `;
+                jobList.appendChild(li);
+            });
+        } else {
+            console.warn("No jobs found in API response.");
+            jobList.innerHTML = "<li>No jobs found. Try adjusting the filters.</li>";
+        }
 
     } catch (error) {
         console.error("Error fetching job data:", error);
 
-        // Prevent setting innerHTML if job-list is missing
+        // Prevent error if job-list is missing
         const jobList = document.getElementById("job-list");
         if (jobList) {
             jobList.innerHTML = "<li>Error fetching job data. Check console.</li>";
