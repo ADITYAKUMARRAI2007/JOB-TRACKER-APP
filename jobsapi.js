@@ -35,8 +35,9 @@ document.addEventListener("DOMContentLoaded", () => {
     fetchJobs();
 });
 
-// Replace with your actual API key
+// API Key provided by the user
 const API_KEY = "292b9e5d13655f0e6e05600ccbfbe4ac8fc38ab9834526fbb19166310a556fc2";
+
 async function fetchJobs() {
     const jobList = document.getElementById("job-list");
 
@@ -56,7 +57,7 @@ async function fetchJobs() {
             "Content-Type": "application/json"
         },
         body: JSON.stringify({
-            q: "fullstack" // Use 'q' for the job query as per the example
+            q: "fullstack" // Search for full-stack jobs
         })
     };
 
@@ -160,15 +161,7 @@ function updateKanbanCounts() {
     const interviewCount = document.getElementById("interview-count");
     const offerCount = document.getElementById("offer-count");
 
-    appliedCount.textContent = document.getElementById("applied").querySelector('.kanban-items').children.length;
-    interviewCount.textContent = document.getElementById("interview").querySelector('.kanban-items').children.length;
-    offerCount.textContent = document.getElementById("offer").querySelector('.kanban-items').children.length;
-}
-
-// Update stats display (e.g., Total Applications)
-function updateStats(id, increment) {
-    const statElement = document.getElementById(id);
-    if (statElement) {
-        statElement.textContent = parseInt(statElement.textContent) + increment;
-    }
+    appliedCount.textContent = document.querySelectorAll('#applied .kanban-item').length;
+    interviewCount.textContent = document.querySelectorAll('#interview .kanban-item').length;
+    offerCount.textContent = document.querySelectorAll('#offer .kanban-item').length;
 }
