@@ -27,6 +27,7 @@ async function fetchJobs() {
     // Show loading message before fetching
     jobList.innerHTML = '<li class="loading">Fetching jobs... ⏳</li>';
 
+    
     try {
         const response = await fetch("https://api.theirstack.com/v1/jobs/search", {
             method: "POST",
