@@ -53,17 +53,18 @@ async function fetchJobs() {
     const options = {
         method: "POST",
         headers: {
-            "apikey": API_KEY, // Add your API key here
+            "apikey": API_KEY, // Your API key here
             "Content-Type": "application/json"
         },
         body: JSON.stringify({
-            q: "fullstack" // Search for full-stack jobs
+            q: "developer" // Change to a more common query if needed
         })
     };
 
     try {
         const response = await fetch(url, options);
         const data = await response.json();
+        console.log("API Response:", data); // Log the full response to understand what's returned
 
         // Check if the data contains job listings
         if (data && data.jobs && data.jobs.length > 0) {
