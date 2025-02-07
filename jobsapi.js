@@ -1,8 +1,8 @@
 document.addEventListener("DOMContentLoaded", () => {
     // Mock job stats (Replace with API data)
-    document.getElementById("total-apps").textContent = "12";
-    document.getElementById("total-interviews").textContent = "4";
-    document.getElementById("total-offers").textContent = "2";
+    document.getElementById("total-apps").textContent = "0";
+    document.getElementById("total-interviews").textContent = "0";
+    document.getElementById("total-offers").textContent = "0";
 
     // Logout functionality
     const logoutBtn = document.getElementById("logout-btn");
