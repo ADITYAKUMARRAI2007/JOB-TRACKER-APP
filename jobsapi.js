@@ -47,20 +47,16 @@ async function fetchJobs() {
 
     jobList.innerHTML = '<li class="loading">Fetching jobs... ⏳</li>';
 
-    const url = "https://api.apijobs.dev/v1/job/search"; // Ensure this is the correct URL
+    const url = "https://api.apijobs.dev/v1/job/search"; // API endpoint
 
     const options = {
         method: "POST",
         headers: {
-            "apikey": API_KEY,
+            "apikey": API_KEY, // Add your API key here
             "Content-Type": "application/json"
         },
         body: JSON.stringify({
-            keywords: "developer",  // Changed 'query' to 'keywords'
-            location: "remote",     // Verify if 'location' is supported
-            full_time: "true",      // Double check if 'full_time' accepts boolean or string
-            page: 1, 
-            results_per_page: 5    // Changed 'per_page' to 'results_per_page' as required by the API
+            q: "fullstack" // Use 'q' for the job query as per the example
         })
     };
 
@@ -99,8 +95,6 @@ async function fetchJobs() {
         console.error("Error fetching jobs:", error);
     }
 }
-
-
 
 // Add job to Kanban Board
 function addJobToKanban(job) {
