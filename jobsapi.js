@@ -58,7 +58,7 @@ async function fetchJobs() {
             "Content-Type": "application/json"
         },
         body: JSON.stringify({
-            q: "developer" // Search query for developer jobs
+            q: "fullstack" // Search query for fullstack jobs (can be modified)
         })
     };
 
@@ -66,7 +66,7 @@ async function fetchJobs() {
         // Fetch job listings
         const response = await fetch(url, options);
         const data = await response.json();
-        console.log("API Response:", data); // Log the full API response
+        console.log("API Response:", data); // Log the full API response for debugging
 
         // Check if jobs are returned in the API response
         if (data && data.jobs && data.jobs.length > 0) {
@@ -95,6 +95,7 @@ async function fetchJobs() {
         console.error("Error fetching jobs:", error);
     }
 }
+
 
 // Add job to Kanban Board
 function addJobToKanban(job) {
