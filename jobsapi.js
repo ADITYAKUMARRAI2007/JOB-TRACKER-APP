@@ -11,7 +11,7 @@ document.addEventListener("DOMContentLoaded", () => {
     fetchJobs();
 });
 
-const API_KEY = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiJhZGl0eWFyYWkwNDAxMjAwN0BnbWFpbC5jb20iLCJwZXJtaXNzaW9ucyI6InVzZXIifQ.tN9FVZPfqQJvk2fNb8Z9wVBIe2eMDIk1YKtt17uYX-o";
+const API_KEY = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiJhZGl0eWFyYWkwNDAxMjAwN0BnbWFpbC5jb20iLCJwZXJtaXNzaW9ucyI6InVzZXIifQ.tN9FVZPfqQJvk2eMDIk1YKtt17uYX-o";
 
 async function fetchJobs() {
     try {
@@ -38,7 +38,7 @@ async function fetchJobs() {
         }
 
         const data = await response.json();
-        console.log("Full API Response:", data);  // ✅ Print entire API response
+        console.log("Full API Response:", data);  // ✅ Debug full response
 
         const jobList = document.getElementById("job-list");
         if (!jobList) {
@@ -50,17 +50,20 @@ async function fetchJobs() {
 
         if (data.data && data.data.length > 0) { 
             data.data.forEach(job => {
-                console.log("Job Data:", job);  // ✅ Print each job object
+                console.log("Job Data:", job);  // ✅ Print job object to check fields
 
-                // 🔍 Find the correct job title field
+                // ✅ Find the correct job title field
                 const jobTitle = job.job_title || job.name || job.title || job.position || "No title available";
+
+                // ✅ Find the correct salary field (try different options)
+                const salary = job.salary || job.salary_range || job.compensation || job.pay || "Not disclosed";
 
                 const li = document.createElement("li");
                 li.innerHTML = `
                     <strong>Job Title:</strong> ${jobTitle}<br>
                     <strong>Company:</strong> ${job.company_name || "N/A"}<br>
                     <strong>Location:</strong> ${job.location || "Not specified"}<br>
-                    <strong>Salary:</strong> ${job.salary || "Not disclosed"}<br>
+                    <strong>Salary:</strong> ${salary}<br>
                     <a href="${job.url}" target="_blank">🔗 View Job</a>
                 `;
                 jobList.appendChild(li);
