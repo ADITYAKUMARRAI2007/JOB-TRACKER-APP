@@ -57,21 +57,20 @@ async function fetchJobs() {
             "apikey": API_KEY,
             "Content-Type": "application/json"
         },
-       body: JSON.stringify({
-    q: "developer" // Try a different search term
-})
-
+        body: JSON.stringify({
+            q: "developer" // Test a different query like "developer"
+        })
     };
 
     try {
         // Fetch job listings
         const response = await fetch(url, options);
         const data = await response.json();
-        console.log("API Response:", data); // Log the full API response for debugging
+        console.log("API Response:", data); // Log the full API response
 
-        // Check if jobs are returned in the API response
-        if (data && data.jobs && data.jobs.length > 0) {
-            const jobs = data.jobs;
+        // Check if there are hits (jobs) in the response
+        if (data && data.hits && data.hits.length > 0) {
+            const jobs = data.hits;
             jobList.innerHTML = '';  // Clear the loading message
 
             // Display job listings
@@ -88,14 +87,14 @@ async function fetchJobs() {
                 jobList.appendChild(jobItem); // Add each job to the job-list
             });
         } else {
-            jobList.innerHTML = '<li>No jobs found for your search criteria.</li>'; // Handle no jobs found
+            jobList.innerHTML = '<li>No jobs found for your search criteria.</li>';
         }
     } catch (error) {
-        // Handle errors and display a friendly message
         jobList.innerHTML = '<li>Error fetching jobs. Please try again later.</li>';
         console.error("Error fetching jobs:", error);
     }
 }
+
 
 
 // Add job to Kanban Board
