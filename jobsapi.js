@@ -78,9 +78,10 @@ async function fetchJobs() {
                 const jobItem = document.createElement('li');
                 jobItem.innerHTML = `
                     <h3>${job.title}</h3>
-                    <p><strong>Company:</strong> ${job.company}</p>
-                    <p><strong>Location:</strong> ${job.location}</p>
-                    <a href="${job.url}" target="_blank">View Job</a>
+                    <p><strong>Company:</strong> ${job.company_name || "Not Provided"}</p>
+                    <p><strong>Location:</strong> ${job.city}, ${job.country}</p>
+                    <p><strong>Description:</strong> ${job.description ? job.description.substring(0, 200) + "..." : "No description available"}</p>
+                    <a href="${job.website_url}" target="_blank">View Job</a>
                     <button class="apply-btn" data-job-id="${job.id}">Apply</button>
                 `;
                 jobList.appendChild(jobItem); // Add each job to the job-list
@@ -122,7 +123,7 @@ function addJobToKanban(job) {
     jobItem.classList.add('kanban-item');
     jobItem.innerHTML = `
         <h4>${job.title}</h4>
-        <p>${job.company}</p>
+        <p>${job.company_name || "No company name"}</p>
         <button class="move-btn" data-status="applied">Move to Applied</button>
         <button class="move-btn" data-status="interview">Move to Interview</button>
         <button class="move-btn" data-status="offer">Move to Offer</button>
