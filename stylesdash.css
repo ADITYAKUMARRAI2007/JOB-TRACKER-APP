@@ -1,124 +1,85 @@
-/* 🌟 General Styles */
 body {
-    font-family: "Poppins", sans-serif;
+    font-family: Arial, sans-serif;
     margin: 0;
     padding: 0;
-    background: linear-gradient(to right, #f8f9fa, #e9ecef);
-    color: #333;
+    background-color: #f7f7f7;
 }
 
-/* 🌟 Header */
 header {
-    background: linear-gradient(135deg, #6a11cb, #2575fc);
+    background-color: #333;
     color: white;
     padding: 20px;
     text-align: center;
-    font-size: 24px;
-    font-weight: bold;
-    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2);
-    border-radius: 0 0 15px 15px;
 }
 
-/* 🌟 Logout Button */
-#logout-btn {
-    background: #ff4d4d;
+header h1 {
+    margin: 0;
+}
+
+button {
+    background-color: #4CAF50;
     color: white;
     border: none;
-    padding: 12px 25px;
+    padding: 10px 20px;
     cursor: pointer;
-    border-radius: 30px;
-    font-size: 16px;
-    transition: all 0.3s ease;
+    border-radius: 5px;
 }
 
-#logout-btn:hover {
-    background: #e60000;
-    transform: scale(1.05);
+button:hover {
+    background-color: #45a049;
 }
 
-/* 🌟 Job List Container */
 #job-list {
     list-style-type: none;
-    padding: 20px;
-    margin: 20px auto;
-    max-width: 900px;
+    padding: 0;
+    margin-top: 20px;
 }
 
-/* 🌟 Job Card Styling */
 #job-list li {
-    background: white;
-    padding: 20px;
+    background-color: #fff;
+    padding: 15px;
     margin-bottom: 15px;
-    border-radius: 12px;
-    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
-    transition: all 0.3s ease;
-    position: relative;
-    overflow: hidden;
+    border-radius: 8px;
+    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
 }
 
-#job-list li:hover {
-    transform: scale(1.03);
-    box-shadow: 0 6px 15px rgba(0, 0, 0, 0.15);
-}
-
-/* 🌟 Job Title */
 #job-list li strong {
-    font-size: 20px;
+    font-size: 18px;
     color: #333;
-    display: block;
-    margin-bottom: 5px;
 }
 
-/* 🌟 Company & Location */
+#job-list li span {
+    display: block;
+    margin: 5px 0;
+    color: #555;
+}
+
+#job-list li .salary {
+    font-weight: bold;
+    color: green;
+}
+
 #job-list li .company {
     color: #444;
-    font-weight: bold;
 }
 
 #job-list li .location {
     color: #777;
 }
 
-/* 🌟 Salary */
-#job-list li .salary {
-    font-weight: bold;
-    color: green;
-}
-
-/* 🌟 Job Type */
 #job-list li .job-type {
     color: #ff5722;
     font-weight: bold;
 }
 
-/* 🌟 Job Description */
 #job-list li .job-description {
-    max-height: 60px;
+    max-height: 50px;
     overflow: hidden;
     text-overflow: ellipsis;
     margin-top: 10px;
     color: #555;
-    transition: max-height 0.3s ease;
 }
 
-#job-list li:hover .job-description {
-    max-height: 150px;
-}
-
-/* 🌟 Apply Button */
-#job-list li a {
-    display: inline-block;
-    background: #2575fc;
-    color: white;
-    padding: 10px 15px;
-    text-decoration: none;
-    border-radius: 8px;
-    font-weight: bold;
-    margin-top: 10px;
-    transition: all 0.3s ease;
-}
-
-#job-list li a:hover {
-    background: #1b5ed7;
-    transform: scale(1.05);
+#job-list li .job-description.expand {
+    max-height: none;
 }
