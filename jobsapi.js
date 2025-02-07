@@ -1,92 +1,112 @@
-document.addEventListener("DOMContentLoaded", async () => {
-    // ✅ Ensure user authentication
+document.addEventListener("DOMContentLoaded", () => {
     if (!localStorage.getItem("user")) {
         window.location.href = "index.html";
         return;
     }
 
-    // ✅ Safe logout handling
-    const logoutBtn = document.getElementById("logout-btn");
-    if (logoutBtn) {
-        logoutBtn.addEventListener("click", () => {
-            localStorage.removeItem("user");
-            window.location.href = "index.html";
-        });
-    }
+    document.getElementById("logout-btn").addEventListener("click", () => {
+        localStorage.removeItem("user");
+        window.location.href = "index.html";
+    });
 
-    // ✅ Fetch jobs on page load
-    await fetchJobs();
+    fetchJobs();
+    loadStats();
 });
 
-// ✅ Replace with your actual API key
-const API_KEY = "292b9e5d13655f0e6e05600ccbfbe4ac8fc38ab9834526fbb19166310a556fc2";
+const API_KEY = "YOUR_API_KEY_HERE";
+const jobList = document.getElementById("job-list");
+
 async function fetchJobs() {
-    const jobList = document.getElementById("job-list");
-
-    if (!jobList) {
-        console.error("Error: job-list element not found in HTML.");
-        return;
-    }
-
-    // ✅ Show a loading message while fetching data
-    jobList.innerHTML = '<li class="loading">Fetching jobs... ⏳</li>';
+    jobList.innerHTML = '<li>Loading jobs... ⏳</li>';
 
     const url = "https://api.apijobs.dev/v1/job/search";
     const options = {
         method: "POST",
-        headers: {
-            "apikey": API_KEY,
-            "Content-Type": "application/json"
-        },
-        body: JSON.stringify({
-            q: "developer" // Try different job keywords
-        })
+        headers: { "apikey": API_KEY, "Content-Type": "application/json" },
+        body: JSON.stringify({ q: "fullstack" })
     };
 
     try {
         const response = await fetch(url, options);
-
-        if (!response.ok) {
-            throw new Error(`HTTP error! Status: ${response.status}`);
-        }
-
         const data = await response.json();
-        console.log("Full API Response:", data);
 
-        // ✅ Check if `hits` array exists
-        if (!data || !Array.isArray(data.hits)) {
-            throw new Error("Invalid API response structure");
-        }
-
-        // ✅ Clear previous job results
         jobList.innerHTML = "";
 
-        if (data.hits.length > 0) { 
-            data.hits.forEach(job => { // 🔥 Changed from data.jobs to data.hits
-                console.log("Job Data:", job);
-
-                // ✅ Extract job details safely
+        if (data.hits && data.hits.length > 0) {
+            data.hits.forEach(job => {
                 const jobTitle = job.title || "No title available";
                 const company = job.company || "N/A";
                 const location = job.location || "Location Not Specified";
                 const jobUrl = job.url || "#";
 
-                // ✅ Create job list item
                 const li = document.createElement("li");
                 li.innerHTML = `
                     <strong>Job Title:</strong> ${jobTitle}<br>
                     <strong>Company:</strong> ${company}<br>
                     <strong>Location:</strong> ${location}<br>
                     <a href="${jobUrl}" target="_blank">🔗 View Job</a>
+                    <button onclick="applyJob('${jobTitle}', '${company}')">Apply</button>
                 `;
                 jobList.appendChild(li);
             });
         } else {
-            console.warn("No jobs found in API response.");
-            jobList.innerHTML = "<li>No jobs found. Try adjusting the filters.</li>";
+            jobList.innerHTML = "<li>No jobs found. Try a different search.</li>";
         }
     } catch (error) {
-        console.error("Error fetching job data:", error);
-        jobList.innerHTML = `<li>Error fetching job data: ${error.message}. Check console.</li>`;
+        jobList.innerHTML = `<li>Error: ${error.message}</li>`;
     }
+}
+
+function applyJob(title, company) {
+    const appliedList = document.querySelector("#applied .kanban-list");
+    const li = document.createElement("li");
+    li.innerText = `${title} - ${company}`;
+    li.draggable = true;
+    li.ondragstart = dragStart;
+    appliedList.appendChild(li);
+
+    updateStats();
+    scheduleInterview(title);
+}
+
+function updateStats() {
+    const count = document.querySelectorAll("#applied .kanban-list li").length;
+    document.getElementById("applications-count").innerText = count;
+}
+
+function scheduleInterview(jobTitle) {
+    const event = {
+        summary: `Interview for ${jobTitle}`,
+        start: { dateTime: new Date().toISOString(), timeZone: "UTC" },
+        end: { dateTime: new Date(new Date().getTime() + 3600000).toISOString(), timeZone: "UTC" }
+    };
+
+    fetch("https://www.googleapis.com/calendar/v3/calendars/primary/events", {
+        method: "POST",
+        headers: {
+            "Authorization": `Bearer YOUR_GOOGLE_ACCESS_TOKEN`,
+            "Content-Type": "application/json"
+        },
+        body: JSON.stringify(event)
+    })
+    .then(response => response.json())
+    .then(data => {
+        alert(`Interview scheduled: ${data.htmlLink}`);
+    })
+    .catch(error => console.error("Error scheduling interview:", error));
+}
+
+// 🏗 Drag & Drop Kanban Functionality
+document.querySelectorAll(".kanban-list").forEach(list => {
+    list.ondragover = (e) => e.preventDefault();
+    list.ondrop = (e) => {
+        e.preventDefault();
+        const id = e.dataTransfer.getData("text");
+        const item = document.getElementById(id);
+        e.target.appendChild(item);
+    };
+});
+
+function dragStart(e) {
+    e.dataTransfer.setData("text", e.target.id);
 }
