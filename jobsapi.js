@@ -1,12 +1,16 @@
 document.addEventListener("DOMContentLoaded", () => {
-    // Display user email in the navigation bar
+    // Fetch user data from localStorage
     const user = JSON.parse(localStorage.getItem("user"));
+    
     if (user && user.email) {
         const userInfo = document.getElementById("user-info");
+        
         if (userInfo) {
-            userInfo.innerHTML = `👋 Welcome, ${user.email}`;
+            userInfo.innerHTML = `👋 Welcome, <span class="highlight-name">${user.email}</span>`;
         }
     }
+});
+
 
     // Initialize job stats (Replace with API data)
     updateJobStats(0, 0, 0);
