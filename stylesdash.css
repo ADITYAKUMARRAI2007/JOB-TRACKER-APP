@@ -23,11 +23,46 @@
     gap: 15px;
 }
 
+/* Sidebar Heading */
 .sidebar h2 {
     text-align: center;
     margin-bottom: 20px;
 }
 
+/* Animated Welcome Message */
+.welcome-message {
+    font-size: 1.2rem;
+    font-weight: bold;
+    color: #ffdd57;
+    text-align: center;
+    margin-bottom: 15px;
+    opacity: 0;
+    animation: fadeIn 1.5s forwards, glowEffect 2s infinite alternate;
+}
+
+/* Smooth Fade-In Animation */
+@keyframes fadeIn {
+    from {
+        opacity: 0;
+        transform: translateY(-10px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+/* Subtle Glow Effect */
+@keyframes glowEffect {
+    from {
+        text-shadow: 0 0 5px #ffdd57, 0 0 10px #f39c12;
+    }
+    to {
+        text-shadow: 0 0 10px #ffdd57, 0 0 15px #f39c12;
+    }
+}
+
+/* Sidebar Navigation */
 .sidebar ul {
     list-style: none;
 }
@@ -41,26 +76,6 @@
     background: #34495e;
     border-radius: 5px;
 }
- .welcome-message {
-            font-size: 1.2rem;
-            font-weight: bold;
-            color: #fff;
-            text-align: center;
-            margin-bottom: 15px;
-            opacity: 0;
-            animation: fadeIn 1.5s forwards;
-        }
-
-        @keyframes fadeIn {
-            from {
-                opacity: 0;
-                transform: translateY(-10px);
-            }
-            to {
-                opacity: 1;
-                transform: translateY(0);
-            }
-        }
 
 .sidebar ul li a {
     color: white;
