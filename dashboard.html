@@ -8,71 +8,76 @@
 </head>
 <body>
 
-    <nav>
-        <ul>
-            <li id="dashboard"><span>📊</span> Dashboard</li>
-            <li id="applications"><span>📋</span> Applications</li>
-            <li id="schedule-interview"><span>📅</span> Schedule Interview</li>
-            <li id="settings"><span>⚙️</span> Settings</li>
-            <li id="logout-btn"><span>🚪</span> Logout</li>
-        </ul>
-    </nav>
+    <div class="container">
+        <!-- Sidebar -->
+        <nav class="sidebar">
+            <h2>Job Tracker</h2>
+            <ul>
+                <li><a href="#">📊 Dashboard</a></li>
+                <li><a href="#">📋 Applications</a></li>
+                <li><a href="#">📅 Schedule Interview</a></li>
+                <li><a href="#">⚙️ Settings</a></li>
+                <li><a href="#" id="logout-btn">🚪 Logout</a></li>
+            </ul>
+        </nav>
 
-    <main>
-        <!-- Dashboard Statistics -->
-        <div class="stats">
-            <div id="total-apps" class="stat-box">Total Applications: <span>12</span></div>
-            <div id="total-interviews" class="stat-box">Scheduled Interviews: <span>4</span></div>
-            <div id="total-offers" class="stat-box">Offers Received: <span>2</span></div>
-        </div>
+        <!-- Main Content -->
+        <main class="content">
+            <header>
+                <h1>Dashboard</h1>
+            </header>
 
-        <!-- Sections for Display -->
-        <div id="dashboard-section" class="section">
-            <h2>Dashboard</h2>
-            <p>Welcome to your Job Application Tracker.</p>
-        </div>
+            <section class="stats">
+                <div class="stat-card">
+                    <h3>📌 Total Applications</h3>
+                    <p id="total-apps">0</p>
+                </div>
+                <div class="stat-card">
+                    <h3>📞 Interviews Scheduled</h3>
+                    <p id="total-interviews">0</p>
+                </div>
+                <div class="stat-card">
+                    <h3>🎉 Offers Received</h3>
+                    <p id="total-offers">0</p>
+                </div>
+            </section>
 
-        <div id="applications-section" class="section" style="display: none;">
-            <h2>Applications</h2>
-            <p>List of applied jobs will appear here.</p>
-        </div>
+            <!-- Google Calendar Integration -->
+            <section class="schedule">
+                <h2>Schedule an Interview</h2>
+                <form id="calendar-form">
+                    <input type="text" id="event-title" placeholder="Event Title" required>
+                    <input type="datetime-local" id="event-time" required>
+                    <button type="submit">📅 Add to Google Calendar</button>
+                </form>
+            </section>
 
-        <div id="scheduled-interviews-section" class="section" style="display: none;">
-            <h2>Scheduled Interviews</h2>
-            <p>List of scheduled interviews will appear here.</p>
-        </div>
+            <!-- Job Listings Section -->
+            <section id="job-section">
+                <h2>Find Jobs</h2>
+                <ul id="job-list"></ul>
+            </section>
 
-        <div id="offers-received-section" class="section" style="display: none;">
-            <h2>Offers Received</h2>
-            <p>List of job offers will appear here.</p>
-        </div>
-
-        <!-- Google Calendar Form -->
-        <form id="calendar-form">
-            <input type="text" id="event-title" placeholder="Interview Title">
-            <input type="datetime-local" id="event-time">
-            <button type="submit">Schedule Interview</button>
-        </form>
-
-        <!-- Job Listings -->
-        <ul id="job-list"></ul>
-
-        <!-- Kanban Board -->
-        <div class="kanban">
-            <div id="applied" class="kanban-column">
-                <h3>Applied (<span id="applied-count">0</span>)</h3>
-                <div class="kanban-items"></div>
-            </div>
-            <div id="interview" class="kanban-column">
-                <h3>Interview (<span id="interview-count">0</span>)</h3>
-                <div class="kanban-items"></div>
-            </div>
-            <div id="offer" class="kanban-column">
-                <h3>Offer (<span id="offer-count">0</span>)</h3>
-                <div class="kanban-items"></div>
-            </div>
-        </div>
-    </main>
+            <!-- Kanban Board -->
+            <section id="kanban-board">
+                <h2>Application Progress</h2>
+                <div class="kanban-container">
+                    <div class="kanban-column" id="applied">
+                        <h3>Applied (<span id="applied-count">0</span>)</h3>
+                        <div class="kanban-items"></div>
+                    </div>
+                    <div class="kanban-column" id="interview">
+                        <h3>Interview (<span id="interview-count">0</span>)</h3>
+                        <div class="kanban-items"></div>
+                    </div>
+                    <div class="kanban-column" id="offer">
+                        <h3>Offer (<span id="offer-count">0</span>)</h3>
+                        <div class="kanban-items"></div>
+                    </div>
+                </div>
+            </section>
+        </main>
+    </div>
 
     <script src="jobsapi.js"></script>
 </body>
