@@ -1,16 +1,14 @@
 document.addEventListener("DOMContentLoaded", () => {
     // Fetch user data from localStorage
     const user = JSON.parse(localStorage.getItem("user"));
-    
-    if (user && user.email) {
+
+    if (user && user.name) {
         const userInfo = document.getElementById("user-info");
         
         if (userInfo) {
             userInfo.innerHTML = `👋 Welcome, <span class="highlight-name">${user.name}</span>`;
         }
     }
-});
-
 
     // Initialize job stats (Replace with API data)
     updateJobStats(0, 0, 0);
@@ -24,25 +22,28 @@ document.addEventListener("DOMContentLoaded", () => {
         });
     }
 
-    // Google Calendar Integration
-    document.getElementById("calendar-form").addEventListener("submit", function (e) {
-        e.preventDefault();
+    // Google Calendar Integration (Check if form exists)
+    const calendarForm = document.getElementById("calendar-form");
+    if (calendarForm) {
+        calendarForm.addEventListener("submit", function (e) {
+            e.preventDefault();
 
-        const title = document.getElementById("event-title").value;
-        const dateTime = document.getElementById("event-time").value;
+            const title = document.getElementById("event-title").value;
+            const dateTime = document.getElementById("event-time").value;
 
-        if (!title || !dateTime) {
-            alert("Please fill all fields");
-            return;
-        }
+            if (!title || !dateTime) {
+                alert("Please fill all fields");
+                return;
+            }
 
-        const formattedTime = new Date(dateTime).toISOString().replace(/-|:|\.\d+/g, "");
-        const googleCalendarUrl = `https://www.google.com/calendar/render?action=TEMPLATE&text=${encodeURIComponent(title)}&dates=${formattedTime}/${formattedTime}`;
+            const formattedTime = new Date(dateTime).toISOString().replace(/-|:|\.\d+/g, "");
+            const googleCalendarUrl = `https://www.google.com/calendar/render?action=TEMPLATE&text=${encodeURIComponent(title)}&dates=${formattedTime}/${formattedTime}`;
 
-        window.open(googleCalendarUrl, "_blank");
-    });
+            window.open(googleCalendarUrl, "_blank");
+        });
+    }
 
-    // Fetch job listings from API
+    // Fetch job listings
     fetchJobs();
 });
 
@@ -121,7 +122,7 @@ function applyForJob(job) {
     alert(`You have applied for the job: ${job.title}`);
 
     // Update job stats
-    updateJobStats();
+    updateKanbanCounts();
 }
 
 // Add job to Kanban Board
