@@ -6,7 +6,7 @@ document.addEventListener("DOMContentLoaded", () => {
         const userInfo = document.getElementById("user-info");
         
         if (userInfo) {
-            userInfo.innerHTML = `👋 Welcome, <span class="highlight-name">${user-name}</span>`;
+            userInfo.innerHTML = `👋 Welcome, <span class="highlight-name">${user.name}</span>`;
         }
     }
 });
