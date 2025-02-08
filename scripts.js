@@ -2,12 +2,12 @@
 import { initializeApp } from "https://www.gstatic.com/firebasejs/9.6.1/firebase-app.js";
 import { 
   getAuth, GoogleAuthProvider, signInWithPopup, signOut, onAuthStateChanged, 
-  createUserWithEmailAndPassword, signInWithEmailAndPassword 
+  createUserWithEmailAndPassword, signInWithEmailAndPassword, sendPasswordResetEmail
 } from "https://www.gstatic.com/firebasejs/9.6.1/firebase-auth.js";
 
 // Firebase configuration
 const firebaseConfig = {
-  apiKey: "AIzaSyAVnIv8VamXAhfKxZVjYNcS7l88h2Q1NaM",
+  apiKey: "AIzaSyA...your-api-key...",
   authDomain: "job-tracker-app-60030.firebaseapp.com",
   projectId: "job-tracker-app-60030",
   storageBucket: "job-tracker-app-60030.appspot.com", 
@@ -26,6 +26,7 @@ const signInButton = document.getElementById("google-signin-btn");
 const signOutButton = document.getElementById("signout-btn");
 const loginButton = document.getElementById("login-btn");
 const signupButton = document.getElementById("signup-btn");
+const resetPasswordButton = document.getElementById("reset-password-btn");
 const userInfoDisplay = document.getElementById("user-info");
 const errorMessage = document.getElementById("error-message");
 
@@ -45,7 +46,6 @@ if (signInButton) {
 }
 
 // ✅ Email/Password Login
-// Email/Password Login
 if (loginButton) {
   loginButton.addEventListener("click", () => {
     const email = document.getElementById("email").value;
@@ -55,16 +55,16 @@ if (loginButton) {
       .then((userCredential) => {
         console.log("Login Success:", userCredential.user);
         localStorage.setItem("user", JSON.stringify(userCredential.user));
-        window.location.href = "dashboard.html";
+        window.location.href = "dashboard.html"; // Redirect to dashboard
       })
       .catch((error) => {
         console.error("Login Error:", error.code, error.message);
-        alert(`Login Error: ${error.message}`);
+        alert(`Login Error: ${error.code} - ${error.message}`);
       });
   });
 }
 
-// Email/Password Signup
+// ✅ Email/Password Signup
 if (signupButton) {
   signupButton.addEventListener("click", () => {
     const email = document.getElementById("email").value;
@@ -72,15 +72,28 @@ if (signupButton) {
 
     createUserWithEmailAndPassword(auth, email, password)
       .then(() => {
-        console.log("Signup Success:", email);
         alert("Account created! Please log in.");
       })
       .catch((error) => {
-        console.error("Signup Error:", error.code, error.message);
-        alert(`Signup Error: ${error.message}`);
+        errorMessage.textContent = `Signup Error: ${error.message}`;
       });
   });
-};
+}
+
+// ✅ Password Reset
+if (resetPasswordButton) {
+  resetPasswordButton.addEventListener("click", () => {
+    const email = document.getElementById("email").value;
+    sendPasswordResetEmail(auth, email)
+      .then(() => {
+        alert("Password reset email sent. Check your inbox.");
+      })
+      .catch((error) => {
+        console.error("Reset Error:", error.code, error.message);
+        alert(`Error: ${error.message}`);
+      });
+  });
+}
 
 // ✅ Sign-out event
 if (signOutButton) {
