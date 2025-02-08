@@ -80,7 +80,7 @@ if (signupButton) {
         alert(`Signup Error: ${error.message}`);
       });
   });
-});
+};
 
 // ✅ Sign-out event
 if (signOutButton) {
