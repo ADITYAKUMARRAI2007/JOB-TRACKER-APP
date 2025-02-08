@@ -102,5 +102,24 @@
     </footer>
 
     <script src="jobsapi.js"></script>
+    
+    <script>
+        document.addEventListener("DOMContentLoaded", () => {
+            const scheduledInterviewsBtn = document.getElementById("scheduled-interviews-btn");
+            const scheduledInterviewsSection = document.getElementById("scheduled-interviews-section");
+
+            if (scheduledInterviewsBtn && scheduledInterviewsSection) {
+                scheduledInterviewsBtn.addEventListener("click", (e) => {
+                    e.preventDefault();  // Prevent default link behavior
+                    
+                    // Show section if hidden
+                    scheduledInterviewsSection.classList.remove("hidden");
+
+                    // Smooth scroll to section
+                    scheduledInterviewsSection.scrollIntoView({ behavior: "smooth", block: "start" });
+                });
+            }
+        });
+    </script>
 </body>
 </html>
