@@ -14,8 +14,6 @@ document.addEventListener("DOMContentLoaded", () => {
     }
 
     // Google Calendar Integration
-    const scheduledInterviews = [];
-
     document.getElementById("calendar-form").addEventListener("submit", function (e) {
         e.preventDefault();
 
@@ -27,47 +25,11 @@ document.addEventListener("DOMContentLoaded", () => {
             return;
         }
 
-        // Save interview details
-        scheduledInterviews.push({ title, dateTime });
-
-        // Update UI
-        updateScheduledInterviews();
-
-        // Open Google Calendar link
         const formattedTime = new Date(dateTime).toISOString().replace(/-|:|\.\d+/g, "");
         const googleCalendarUrl = `https://www.google.com/calendar/render?action=TEMPLATE&text=${encodeURIComponent(title)}&dates=${formattedTime}/${formattedTime}`;
+
         window.open(googleCalendarUrl, "_blank");
-
-        // Clear form
-        document.getElementById("event-title").value = "";
-        document.getElementById("event-time").value = "";
     });
-
-    // Show scheduled interviews when clicking "Schedule Interview"
-    const scheduleInterviewBtn = document.getElementById("schedule-interview-btn");
-    if (scheduleInterviewBtn) {
-        scheduleInterviewBtn.addEventListener("click", () => {
-            document.getElementById("scheduled-interviews-section").style.display = "block";
-            updateScheduledInterviews();
-        });
-    }
-
-    // Function to update scheduled interviews list
-    function updateScheduledInterviews() {
-        const list = document.getElementById("scheduled-interviews-list");
-        list.innerHTML = "";
-
-        if (scheduledInterviews.length === 0) {
-            list.innerHTML = "<li>No interviews scheduled.</li>";
-            return;
-        }
-
-        scheduledInterviews.forEach(interview => {
-            const li = document.createElement("li");
-            li.innerHTML = `<strong>${interview.title}</strong> - ${new Date(interview.dateTime).toLocaleString()}`;
-            list.appendChild(li);
-        });
-    }
 
     // Job Fetching from API
     fetchJobs();
@@ -154,6 +116,9 @@ function applyForJob(job) {
     alert(`You have applied for the job: ${job.title}`);
 }
 
+
+
+
 // Add job to Kanban Board
 function addJobToKanban(job) {
     // Kanban columns
@@ -161,6 +126,7 @@ function addJobToKanban(job) {
     const interviewColumn = document.getElementById("interview");
     const offerColumn = document.getElementById("offer");
 
+    // Ensure the Kanban columns and 'kanban-items' container exist
     if (!appliedColumn || !interviewColumn || !offerColumn) {
         console.error("Kanban columns not found in the DOM.");
         return;
@@ -200,4 +166,49 @@ function addJobToKanban(job) {
             moveJobToColumn(jobItem, status);
         });
     });
+}
+
+// Move job item to the selected Kanban column
+function moveJobToColumn(jobItem, status) {
+    const appliedColumn = document.getElementById("applied");
+    const interviewColumn = document.getElementById("interview");
+    const offerColumn = document.getElementById("offer");
+
+    const appliedItems = appliedColumn.querySelector('.kanban-items');
+    const interviewItems = interviewColumn.querySelector('.kanban-items');
+    const offerItems = offerColumn.querySelector('.kanban-items');
+
+    // Only remove from the column if the job item exists there
+    if (appliedItems.contains(jobItem)) {
+        appliedItems.removeChild(jobItem);
+    }
+    if (interviewItems.contains(jobItem)) {
+        interviewItems.removeChild(jobItem);
+    }
+    if (offerItems.contains(jobItem)) {
+        offerItems.removeChild(jobItem);
+    }
+
+    // Add job to the selected column
+    if (status === "applied") {
+        appliedItems.appendChild(jobItem);
+    } else if (status === "interview") {
+        interviewItems.appendChild(jobItem);
+    } else if (status === "offer") {
+        offerItems.appendChild(jobItem);
+    }
+
+    // Update the Kanban counts after moving the job
+    updateKanbanCounts();
+}
+
+// Update Kanban board statistics (count of jobs in each stage)
+function updateKanbanCounts() {
+    const appliedCount = document.getElementById("applied-count");
+    const interviewCount = document.getElementById("interview-count");
+    const offerCount = document.getElementById("offer-count");
+
+    appliedCount.textContent = document.querySelectorAll('#applied .kanban-item').length;
+    interviewCount.textContent = document.querySelectorAll('#interview .kanban-item').length;
+    offerCount.textContent = document.querySelectorAll('#offer .kanban-item').length;
 }
