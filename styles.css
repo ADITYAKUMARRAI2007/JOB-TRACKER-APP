@@ -1,42 +1,102 @@
-/* Basic styling for the login page */
+/* Global Styles */
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+  font-family: 'Poppins', sans-serif;
+}
+
 body {
-  font-family: Arial, sans-serif;
   display: flex;
   justify-content: center;
   align-items: center;
   height: 100vh;
-  margin: 0;
-  background-color: #f4f4f4;
+  background: linear-gradient(to right, #4A90E2, #145DA0);
 }
 
+/* Login Container */
 .login-container {
-  text-align: center;
+  width: 350px;
+  background: white;
   padding: 30px;
-  background-color: white;
-  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
-  border-radius: 10px;
-  width: 300px;
+  border-radius: 12px;
+  box-shadow: 0 5px 15px rgba(0, 0, 0, 0.2);
+  text-align: center;
 }
 
-h2 {
+.login-container h2 {
+  font-size: 22px;
   margin-bottom: 20px;
+  color: #333;
 }
 
-button {
-  padding: 10px 20px;
-  background-color: #4285f4;
-  color: white;
-  border: none;
-  border-radius: 5px;
-  cursor: pointer;
-  font-size: 16px;
+/* Input Fields */
+input {
   width: 100%;
+  padding: 10px;
+  margin: 10px 0;
+  border: 1px solid #ccc;
+  border-radius: 6px;
+  font-size: 16px;
+  transition: 0.3s ease-in-out;
+}
+
+input:focus {
+  border-color: #4A90E2;
+  outline: none;
+}
+
+/* Buttons */
+button {
+  width: 100%;
+  padding: 12px;
+  font-size: 16px;
+  font-weight: bold;
+  border: none;
+  border-radius: 6px;
+  cursor: pointer;
+  transition: 0.3s ease-in-out;
+  margin-top: 10px;
+}
+
+#login-btn, #signup-btn {
+  background: #4A90E2;
+  color: white;
+}
+
+#google-signin-btn {
+  background: white;
+  color: #444;
+  border: 1px solid #ccc;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+#google-signin-btn img {
+  width: 18px;
+  margin-right: 10px;
+}
+
+#signout-btn {
+  background: #d9534f;
+  color: white;
 }
 
 button:hover {
-  background-color: #357ae8;
+  opacity: 0.8;
 }
 
-p {
+/* Error Message */
+#error-message {
   margin-top: 10px;
+  color: red;
+  font-size: 14px;
+}
+
+/* Responsive Design */
+@media (max-width: 400px) {
+  .login-container {
+    width: 90%;
+  }
 }
