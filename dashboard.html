@@ -3,28 +3,28 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Job Tracker Dashboard</title>
-    <link rel="stylesheet" href="InterviewStyles.css">
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css">
+    <title>Job Application Tracker</title>
+    <link rel="stylesheet" href="stylesdash.css">
 </head>
 <body>
 
-    <div class="dashboard">
+    <div class="container">
+        <!-- Sidebar -->
         <nav class="sidebar">
             <h2>Job Tracker</h2>
-            <p id="user-info">👋 Welcome, <span id="user-name">Guest</span></p>
+            <p id="user-info">👋 Welcome, <span id="user-name">Gues</span></p>
             <ul>
-                <li>
-                    <a href="scheduled-interviews.html" class="menu-item">
-                        <i class="fas fa-calendar-alt"></i> Scheduled Interviews (<span id="sidebar-interviews">0</span>)
-                    </a>
-                </li>
-                <li><a href="#" id="logout-btn"><i class="fas fa-sign-out-alt"></i> Logout</a></li>
+                <li><a href="#">📅 Schedule Interview</a></li>
+                <li><a href="#" id="logout-btn">🚪 Logout</a></li>
             </ul>
         </nav>
 
+        <!-- Main Content -->
         <main class="content">
-            <h1>Dashboard</h1>
+            <header>
+                <h1>Dashboard</h1>
+            </header>
+
             <section class="stats">
                 <div class="stat-card">
                     <h3>📌 Total Applications</h3>
@@ -40,18 +40,35 @@
                 </div>
             </section>
 
+            <!-- Google Calendar Integration -->
+            <section class="schedule">
+                <h2>Schedule an Interview</h2>
+                <form id="calendar-form">
+                    <input type="text" id="event-title" placeholder="Event Title" required>
+                    <input type="datetime-local" id="event-time" required>
+                    <button type="submit">📅 Add to Google Calendar</button>
+                </form>
+            </section>
+
+            <!-- Job Listings Section -->
+            <section id="job-section">
+                <h2>Find Jobs</h2>
+                <ul id="job-list"></ul>
+            </section>
+
+            <!-- Kanban Board -->
             <section id="kanban-board">
                 <h2>Application Progress</h2>
-                <div class="kanban">
-                    <div id="applied" class="kanban-column">
+                <div class="kanban-container">
+                    <div class="kanban-column" id="applied">
                         <h3>Applied (<span id="applied-count">0</span>)</h3>
                         <div class="kanban-items"></div>
                     </div>
-                    <div id="interview" class="kanban-column">
+                    <div class="kanban-column" id="interview">
                         <h3>Interview (<span id="interview-count">0</span>)</h3>
                         <div class="kanban-items"></div>
                     </div>
-                    <div id="offer" class="kanban-column">
+                    <div class="kanban-column" id="offer">
                         <h3>Offer (<span id="offer-count">0</span>)</h3>
                         <div class="kanban-items"></div>
                     </div>
