@@ -9,6 +9,22 @@ document.addEventListener("DOMContentLoaded", () => {
             window.location.href = "index.html";
         });
     }
+
+    // Redirect to the "Scheduled Interviews" section when clicking the navbar link
+    const scheduledInterviewsLink = document.getElementById("scheduled-interviews-link");
+    if (scheduledInterviewsLink) {
+        scheduledInterviewsLink.addEventListener("click", (e) => {
+            e.preventDefault();  // Prevent default anchor behavior
+
+            // Scroll to the interview section
+            const interviewSection = document.getElementById("interview");
+            if (interviewSection) {
+                interviewSection.scrollIntoView({ behavior: "smooth" });
+            } else {
+                console.warn("Interview section not found.");
+            }
+        });
+    }
 });
 
 const API_KEY = "292b9e5d13655f0e6e05600ccbfbe4ac8fc38ab9834526fbb19166310a556fc2";
@@ -43,8 +59,6 @@ async function fetchJobs() {
 
 function addJobToList(job) {
     const jobList = document.getElementById("job-list");
-    if (!jobList) return;
-
     const jobItem = document.createElement("div");
     jobItem.classList.add("job-item", "bg-white", "p-4", "rounded-lg", "shadow-lg");
 
@@ -77,11 +91,7 @@ function addJobToKanban(job) {
         <button class="move-btn bg-green-500 text-white px-2 py-1 rounded mt-2" data-status="offer">Move to Offer</button>
     `;
 
-    const appliedColumn = document.querySelector("#applied .kanban-items");
-    if (appliedColumn) {
-        appliedColumn.appendChild(jobItem);
-    }
-
+    document.querySelector("#applied .kanban-items").appendChild(jobItem);
     updateKanbanCounts();
 
     jobItem.querySelectorAll(".move-btn").forEach(btn => {
@@ -106,24 +116,26 @@ function moveJobToColumn(jobItem, status, job) {
 function redirectToGoogleCalendar(job) {
     const title = `Interview for ${job.title}`;
     const now = new Date();
-    const start = now.toISOString().replace(/-|:|\.\d+/g, "").slice(0, 15);
-    const end = new Date(now.getTime() + 60 * 60 * 1000).toISOString().replace(/-|:|\.\d+/g, "").slice(0, 15);
+    const formattedTime = now.toISOString().replace(/-|:|\.\d+/g, "");
+    const googleCalendarUrl = `https://www.google.com/calendar/render?action=TEMPLATE&text=${encodeURIComponent(title)}&dates=${formattedTime}/${formattedTime}`;
+    window.location.href = googleCalendarUrl;
+}
 
-    const googleCalendarUrl = `https://www.google.com/calendar/render?action=TEMPLATE&text=${encodeURIComponent(title)}&dates=${start}/${end}`;
-    window.open(googleCalendarUrl, "_blank");
+function updateJobStats() {
+    document.getElementById("total-apps").textContent = document.querySelectorAll('#applied .kanban-item').length;
+    document.getElementById("total-interviews").textContent = document.querySelectorAll('#interview .kanban-item').length;
+    document.getElementById("total-offers").textContent = document.querySelectorAll('#offer .kanban-item').length;
 }
 
 function updateKanbanCounts() {
     document.getElementById("applied-count").textContent = document.querySelectorAll('#applied .kanban-item').length;
     document.getElementById("interview-count").textContent = document.querySelectorAll('#interview .kanban-item').length;
     document.getElementById("offer-count").textContent = document.querySelectorAll('#offer .kanban-item').length;
-    
     updateJobStats();
 }
 
 function updateJobStats() {
     const interviewCount = document.querySelectorAll('#interview .kanban-item').length;
-
     document.getElementById("total-apps").textContent = document.querySelectorAll('#applied .kanban-item').length;
     document.getElementById("total-interviews").textContent = interviewCount;
     document.getElementById("total-offers").textContent = document.querySelectorAll('#offer .kanban-item').length;
