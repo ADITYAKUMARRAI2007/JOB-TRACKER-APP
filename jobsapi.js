@@ -91,22 +91,16 @@ function moveJobToColumn(jobItem, status, job) {
     }
     
     if (status === "interview") {
-        scheduleInterview(job);
+        redirectToGoogleCalendar(job);
     }
 }
 
-function scheduleInterview(job) {
-    const title = prompt("Enter interview title:", `Interview for ${job.title}`);
-    const dateTime = prompt("Enter interview date and time (YYYY-MM-DDTHH:MM):");
-
-    if (!title || !dateTime) {
-        alert("Please provide both title and date/time for scheduling.");
-        return;
-    }
-
-    const formattedTime = new Date(dateTime).toISOString().replace(/-|:|\.\d+/g, "");
+function redirectToGoogleCalendar(job) {
+    const title = `Interview for ${job.title}`;
+    const now = new Date();
+    const formattedTime = now.toISOString().replace(/-|:|\.\d+/g, "");
     const googleCalendarUrl = `https://www.google.com/calendar/render?action=TEMPLATE&text=${encodeURIComponent(title)}&dates=${formattedTime}/${formattedTime}`;
-    window.open(googleCalendarUrl, "_blank");
+    window.location.href = googleCalendarUrl;
 }
 
 function updateJobStats() {
