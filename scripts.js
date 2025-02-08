@@ -7,7 +7,7 @@ import {
 
 // Firebase configuration
 const firebaseConfig = {
-  apiKey: "AIzaSyA...your-api-key...",
+  apiKey: "AIzaSyAVnIv8VamXAhfKxZVjYNcS7l88h2Q1NaM",
   authDomain: "job-tracker-app-60030.firebaseapp.com",
   projectId: "job-tracker-app-60030",
   storageBucket: "job-tracker-app-60030.appspot.com", 
