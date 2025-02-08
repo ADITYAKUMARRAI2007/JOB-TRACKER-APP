@@ -1,4 +1,12 @@
 document.addEventListener("DOMContentLoaded", () => {
+     const user = JSON.parse(localStorage.getItem("user"));
+
+    if (user && user.name) {
+        document.getElementById("user-name").textContent = user.name; // Display username
+    } else {
+        document.getElementById("user-name").textContent = "Guest"; // Default text
+    }
+
     // Mock job stats (Replace with API data)
     document.getElementById("total-apps").textContent = "0";
     document.getElementById("total-interviews").textContent = "0";
