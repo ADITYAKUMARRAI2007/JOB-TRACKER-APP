@@ -1,6 +1,9 @@
 // Import Firebase modules
 import { initializeApp } from "https://www.gstatic.com/firebasejs/9.6.1/firebase-app.js";
-import { getAuth, GoogleAuthProvider, signInWithPopup, signOut, onAuthStateChanged } from "https://www.gstatic.com/firebasejs/9.6.1/firebase-auth.js";
+import { 
+  getAuth, GoogleAuthProvider, signInWithPopup, signOut, onAuthStateChanged, 
+  createUserWithEmailAndPassword, signInWithEmailAndPassword 
+} from "https://www.gstatic.com/firebasejs/9.6.1/firebase-auth.js";
 
 // Firebase configuration
 const firebaseConfig = {
@@ -21,10 +24,12 @@ const provider = new GoogleAuthProvider();
 // DOM Elements
 const signInButton = document.getElementById("google-signin-btn");
 const signOutButton = document.getElementById("signout-btn");
+const loginButton = document.getElementById("login-btn");
+const signupButton = document.getElementById("signup-btn");
 const userInfoDisplay = document.getElementById("user-info");
 const errorMessage = document.getElementById("error-message");
 
-// ✅ Sign-in event
+// ✅ Google Sign-in event
 if (signInButton) {
   signInButton.addEventListener("click", () => {
     signInWithPopup(auth, provider)
@@ -35,6 +40,39 @@ if (signInButton) {
       })
       .catch((error) => {
         errorMessage.textContent = `Error: ${error.message}`;
+      });
+  });
+}
+
+// ✅ Email/Password Login
+if (loginButton) {
+  loginButton.addEventListener("click", () => {
+    const email = document.getElementById("email").value;
+    const password = document.getElementById("password").value;
+
+    signInWithEmailAndPassword(auth, email, password)
+      .then((userCredential) => {
+        localStorage.setItem("user", JSON.stringify(userCredential.user)); // Store user
+        window.location.href = "dashboard.html"; // Redirect to dashboard
+      })
+      .catch((error) => {
+        errorMessage.textContent = `Login Error: ${error.message}`;
+      });
+  });
+}
+
+// ✅ Email/Password Signup
+if (signupButton) {
+  signupButton.addEventListener("click", () => {
+    const email = document.getElementById("email").value;
+    const password = document.getElementById("password").value;
+
+    createUserWithEmailAndPassword(auth, email, password)
+      .then(() => {
+        alert("Account created! Please log in.");
+      })
+      .catch((error) => {
+        errorMessage.textContent = `Signup Error: ${error.message}`;
       });
   });
 }
@@ -58,19 +96,7 @@ onAuthStateChanged(auth, (user) => {
   if (user) {
     localStorage.setItem("user", JSON.stringify(user)); // Save user data
     if (userInfoDisplay) {
-      userInfoDisplay.innerHTML = `Welcome, ${user.displayName}!`;
+      userInfoDisplay.innerHTML = `Welcome, ${user.displayName || user.email}!`;
     }
-    
-    // Only redirect to dashboard if on login page
-  //   if (window.location.pathname.includes("index.html")) {
-  //     window.location.href = "dashboard.html";
-  //   }
-  // } else {
-  //   localStorage.removeItem("user"); // Clear user data
-
-    // If not logged in and on dashboard, redirect to login
-    // if (window.location.pathname.includes("dashboard.html")) {
-    //   // window.location.href = "index.html";
-    // }
   }
 });
