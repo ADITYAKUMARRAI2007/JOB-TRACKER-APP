@@ -9,24 +9,6 @@ document.addEventListener("DOMContentLoaded", () => {
             window.location.href = "index.html";
         });
     }
-
-    const calendarForm = document.getElementById("calendar-form");
-    if (calendarForm) {
-        calendarForm.addEventListener("submit", function (e) {
-            e.preventDefault();
-            const title = document.getElementById("event-title").value;
-            const dateTime = document.getElementById("event-time").value;
-
-            if (!title || !dateTime) {
-                alert("Please fill all fields");
-                return;
-            }
-
-            const formattedTime = new Date(dateTime).toISOString().replace(/-|:|\.\d+/g, "");
-            const googleCalendarUrl = `https://www.google.com/calendar/render?action=TEMPLATE&text=${encodeURIComponent(title)}&dates=${formattedTime}/${formattedTime}`;
-            window.open(googleCalendarUrl, "_blank");
-        });
-    }
 });
 
 const API_KEY = "292b9e5d13655f0e6e05600ccbfbe4ac8fc38ab9834526fbb19166310a556fc2";
@@ -96,17 +78,35 @@ function addJobToKanban(job) {
     updateKanbanCounts();
     jobItem.querySelectorAll(".move-btn").forEach(btn => {
         btn.addEventListener("click", (e) => {
-            moveJobToColumn(jobItem, e.target.dataset.status);
+            moveJobToColumn(jobItem, e.target.dataset.status, job);
         });
     });
 }
 
-function moveJobToColumn(jobItem, status) {
+function moveJobToColumn(jobItem, status, job) {
     const targetColumn = document.querySelector(`#${status} .kanban-items`);
     if (targetColumn) {
         targetColumn.appendChild(jobItem);
         updateKanbanCounts();
     }
+    
+    if (status === "interview") {
+        scheduleInterview(job);
+    }
+}
+
+function scheduleInterview(job) {
+    const title = prompt("Enter interview title:", `Interview for ${job.title}`);
+    const dateTime = prompt("Enter interview date and time (YYYY-MM-DDTHH:MM):");
+
+    if (!title || !dateTime) {
+        alert("Please provide both title and date/time for scheduling.");
+        return;
+    }
+
+    const formattedTime = new Date(dateTime).toISOString().replace(/-|:|\.\d+/g, "");
+    const googleCalendarUrl = `https://www.google.com/calendar/render?action=TEMPLATE&text=${encodeURIComponent(title)}&dates=${formattedTime}/${formattedTime}`;
+    window.open(googleCalendarUrl, "_blank");
 }
 
 function updateJobStats() {
