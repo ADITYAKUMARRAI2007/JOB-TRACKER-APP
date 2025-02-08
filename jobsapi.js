@@ -168,3 +168,9 @@ function updateKanbanCounts() {
     document.getElementById("offer-count").textContent = document.querySelectorAll('#offer .kanban-item').length;
     updateJobStats();
 }
+document.addEventListener("DOMContentLoaded", () => {
+    localStorage.removeItem("scheduledInterviews"); // Clears stored interviews on refresh
+    updateJobStats();
+    fetchJobs();
+});
+
