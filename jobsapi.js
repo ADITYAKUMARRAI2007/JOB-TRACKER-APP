@@ -19,7 +19,7 @@ document.addEventListener("DOMContentLoaded", () => {
     }
 });
 
-const API_KEY = "d66ec65d83c35b30c603d4b5de0781a7006f1f9c653e231104986013d47ed361";
+const API_KEY = "fd7e9f60c88e3b47cc89766b131eb94f8f72d309f033ed5935d1ff0712979d04";
 
 async function fetchJobs() {
     const jobList = document.getElementById("job-list");
