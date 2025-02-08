@@ -1,16 +1,6 @@
 document.addEventListener("DOMContentLoaded", () => {
-     const user = JSON.parse(localStorage.getItem("user"));
-
-    if (user && user.name) {
-        document.getElementById("user-name").textContent = user.name; // Display username
-    } else {
-        document.getElementById("user-name").textContent = "Guest"; // Default text
-    }
-
-    // Mock job stats (Replace with API data)
-    document.getElementById("total-apps").textContent = "0";
-    document.getElementById("total-interviews").textContent = "0";
-    document.getElementById("total-offers").textContent = "0";
+    // Initialize job stats
+    updateJobStats();
 
     // Logout functionality
     const logoutBtn = document.getElementById("logout-btn");
@@ -39,25 +29,28 @@ document.addEventListener("DOMContentLoaded", () => {
         window.open(googleCalendarUrl, "_blank");
     });
 
-    // Job Fetching from API
+    // Fetch jobs from API
     fetchJobs();
+
+    // Load jobs from localStorage
+    loadJobsFromStorage();
 });
 
-// API Key provided by the user
+// API Key
 const API_KEY = "292b9e5d13655f0e6e05600ccbfbe4ac8fc38ab9834526fbb19166310a556fc2";
 
-// Function to fetch job listings from API
+// Fetch job listings
 async function fetchJobs() {
     const jobList = document.getElementById("job-list");
 
     if (!jobList) {
-        console.error("Error: job-list element not found in HTML.");
+        console.error("Error: job-list element not found.");
         return;
     }
 
-    jobList.innerHTML = '<li class="loading">Fetching jobs... ⏳</li>'; // Loading message
+    jobList.innerHTML = '<li class="loading">Fetching jobs... ⏳</li>';
 
-    const url = "https://api.apijobs.dev/v1/job/search"; // API endpoint for job listings
+    const url = "https://api.apijobs.dev/v1/job/search";
 
     const options = {
         method: "POST",
@@ -66,39 +59,36 @@ async function fetchJobs() {
             "Content-Type": "application/json"
         },
         body: JSON.stringify({
-            q: "developer" // Search for "developer" jobs
+            q: "developer"
         })
     };
 
     try {
-        // Fetch job listings
         const response = await fetch(url, options);
         const data = await response.json();
-        
-        console.log("API Response:", data); // Log the full API response for debugging
+
+        console.log("API Response:", data);
 
         if (data && data.hits && Array.isArray(data.hits) && data.hits.length > 0) {
-            const jobs = data.hits;
             jobList.innerHTML = '';  
 
-            jobs.forEach(job => {
-                const jobItem = document.createElement('li');
+            data.hits.forEach(job => {
+                const jobItem = document.createElement('div');
+                jobItem.classList.add('job-card', 'p-4', 'border', 'rounded-lg', 'shadow', 'mb-3');
+
                 jobItem.innerHTML = `
-                    <h3>${job.title}</h3>
+                    <h3 class="text-lg font-semibold">${job.title}</h3>
                     <p><strong>Company:</strong> ${job.company_name || "Not Provided"}</p>
                     <p><strong>Location:</strong> ${job.city}, ${job.country}</p>
-                    <p><strong>Description:</strong> ${job.description ? job.description.substring(0, 200) + "..." : "No description available"}</p>
-                    <a href="${job.website_url}" target="_blank">View Job</a>
-                    <button class="apply-btn" data-job-id="${job.id}">Apply</button>
+                    <p>${job.description ? job.description.substring(0, 200) + "..." : "No description available"}</p>
+                    <a href="${job.website_url}" target="_blank" class="text-blue-500 hover:underline">View Job</a>
+                    <button class="apply-btn bg-green-500 text-white px-4 py-2 mt-2 rounded">Apply</button>
                 `;
-                jobList.appendChild(jobItem); 
-                
-                const applyBtn = jobItem.querySelector('.apply-btn');
-                if (applyBtn) {
-                    applyBtn.addEventListener('click', function() {
-                        applyForJob(job); 
-                    });
-                }
+                jobList.appendChild(jobItem);
+
+                jobItem.querySelector('.apply-btn').addEventListener('click', function () {
+                    applyForJob(job);
+                });
             });
         } else {
             jobList.innerHTML = '<li>No jobs found for your search criteria.</li>';
@@ -109,96 +99,106 @@ async function fetchJobs() {
     }
 }
 
-// Function to handle job application
+// Handle job application
 function applyForJob(job) {
     console.log("Applying for job:", job.title);
     addJobToKanban(job);
     alert(`You have applied for the job: ${job.title}`);
 }
 
-// Add job to Kanban Board
+// Add job to Kanban Board (Applied Column)
 function addJobToKanban(job) {
-    const appliedColumn = document.getElementById("applied");
-    const interviewColumn = document.getElementById("interview");
-    const offerColumn = document.getElementById("offer");
+    const appliedColumn = document.getElementById("applied").querySelector(".kanban-items");
 
-    if (!appliedColumn || !interviewColumn || !offerColumn) {
-        console.error("Kanban columns not found in the DOM.");
+    if (!appliedColumn) {
+        console.error("Error: Applied column not found.");
         return;
     }
 
-    const appliedItems = appliedColumn.querySelector('.kanban-items');
-    const interviewItems = interviewColumn.querySelector('.kanban-items');
-    const offerItems = offerColumn.querySelector('.kanban-items');
+    const jobItem = document.createElement("div");
+    jobItem.classList.add("kanban-item", "bg-white", "p-4", "rounded-lg", "shadow", "border");
 
-    if (!appliedItems || !interviewItems || !offerItems) {
-        console.error("Kanban item containers not found in columns.");
-        return;
-    }
-
-    const jobItem = document.createElement('div');
-    jobItem.classList.add('kanban-item');
     jobItem.innerHTML = `
-        <h4>${job.title}</h4>
-        <p>${job.company_name || "No company name"}</p>
-        <button class="move-btn" data-status="applied">Move to Applied</button>
-        <button class="move-btn" data-status="interview">Move to Interview</button>
-        <button class="move-btn" data-status="offer">Move to Offer</button>
+        <h4 class="text-lg font-semibold">${job.title}</h4>
+        <p class="text-gray-600"><strong>Company:</strong> ${job.company_name || "N/A"}</p>
+        <a href="${job.website_url}" target="_blank" class="text-blue-500 hover:underline">View Job</a>
+        <button class="move-btn bg-green-500 text-white p-2 rounded hover:bg-green-600">Schedule Interview</button>
     `;
 
-    appliedItems.appendChild(jobItem);
+    appliedColumn.appendChild(jobItem);
     updateKanbanCounts();
 
-    const moveBtns = jobItem.querySelectorAll('.move-btn');
-    moveBtns.forEach(btn => {
-        btn.addEventListener('click', (e) => {
-            const status = e.target.getAttribute('data-status');
-            moveJobToColumn(jobItem, status);
-        });
+    jobItem.querySelector(".move-btn").addEventListener("click", function () {
+        moveToInterview(jobItem);
     });
+
+    saveToLocalStorage(jobItem.innerHTML, "applied");
 }
 
-// Move job item to the selected Kanban column
-function moveJobToColumn(jobItem, status) {
-    const appliedColumn = document.getElementById("applied");
-    const interviewColumn = document.getElementById("interview");
-    const offerColumn = document.getElementById("offer");
+// Move job to Interview stage
+function moveToInterview(jobItem) {
+    const interviewColumn = document.getElementById("interview").querySelector(".kanban-items");
 
-    const appliedItems = appliedColumn.querySelector('.kanban-items');
-    const interviewItems = interviewColumn.querySelector('.kanban-items');
-    const offerItems = offerColumn.querySelector('.kanban-items');
+    jobItem.querySelector(".move-btn").textContent = "Received Offer";
+    jobItem.querySelector(".move-btn").classList.replace("bg-green-500", "bg-blue-500");
 
-    if (appliedItems.contains(jobItem)) appliedItems.removeChild(jobItem);
-    if (interviewItems.contains(jobItem)) interviewItems.removeChild(jobItem);
-    if (offerItems.contains(jobItem)) offerItems.removeChild(jobItem);
+    interviewColumn.appendChild(jobItem);
+    updateKanbanCounts();
 
-    if (status === "applied") {
-        appliedItems.appendChild(jobItem);
-    } else if (status === "interview") {
-        interviewItems.appendChild(jobItem);
-    } else if (status === "offer") {
-        offerItems.appendChild(jobItem);
-    }
+    jobItem.querySelector(".move-btn").addEventListener("click", function () {
+        moveToOffer(jobItem);
+    });
 
-    updateKanbanCounts(); 
+    saveToLocalStorage(jobItem.innerHTML, "interview");
 }
 
-// Function to update job stats dynamically
+// Move job to Offer stage
+function moveToOffer(jobItem) {
+    const offerColumn = document.getElementById("offer").querySelector(".kanban-items");
+
+    jobItem.querySelector(".move-btn").remove();
+    offerColumn.appendChild(jobItem);
+    updateKanbanCounts();
+
+    saveToLocalStorage(jobItem.innerHTML, "offer");
+}
+
+// Update job stats dynamically
 function updateJobStats() {
     document.getElementById("total-apps").textContent = document.querySelectorAll('#applied .kanban-item').length;
     document.getElementById("total-interviews").textContent = document.querySelectorAll('#interview .kanban-item').length;
     document.getElementById("total-offers").textContent = document.querySelectorAll('#offer .kanban-item').length;
 }
 
-// Modify updateKanbanCounts to also update job stats
+// Update Kanban board counts
 function updateKanbanCounts() {
-    const appliedCount = document.getElementById("applied-count");
-    const interviewCount = document.getElementById("interview-count");
-    const offerCount = document.getElementById("offer-count");
+    document.getElementById("applied-count").textContent = document.querySelectorAll('#applied .kanban-item').length;
+    document.getElementById("interview-count").textContent = document.querySelectorAll('#interview .kanban-item').length;
+    document.getElementById("offer-count").textContent = document.querySelectorAll('#offer .kanban-item').length;
 
-    appliedCount.textContent = document.querySelectorAll('#applied .kanban-item').length;
-    interviewCount.textContent = document.querySelectorAll('#interview .kanban-item').length;
-    offerCount.textContent = document.querySelectorAll('#offer .kanban-item').length;
+    updateJobStats();
+}
 
-    updateJobStats(); // Ensures job stats update when Kanban board updates
+// Save job status in localStorage
+function saveToLocalStorage(jobHTML, column) {
+    let jobs = JSON.parse(localStorage.getItem(column)) || [];
+    jobs.push(jobHTML);
+    localStorage.setItem(column, JSON.stringify(jobs));
+}
+
+// Load jobs from localStorage on page reload
+function loadJobsFromStorage() {
+    ["applied", "interview", "offer"].forEach(column => {
+        const columnElement = document.getElementById(column).querySelector(".kanban-items");
+        const jobs = JSON.parse(localStorage.getItem(column)) || [];
+
+        jobs.forEach(jobHTML => {
+            const jobItem = document.createElement("div");
+            jobItem.classList.add("kanban-item");
+            jobItem.innerHTML = jobHTML;
+            columnElement.appendChild(jobItem);
+        });
+    });
+
+    updateKanbanCounts();
 }
