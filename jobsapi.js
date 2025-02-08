@@ -11,6 +11,7 @@ document.addEventListener("DOMContentLoaded", () => {
     }
 });
 
+
 const API_KEY = "292b9e5d13655f0e6e05600ccbfbe4ac8fc38ab9834526fbb19166310a556fc2";
 
 async function fetchJobs() {
@@ -115,3 +116,13 @@ function updateKanbanCounts() {
     document.getElementById("offer-count").textContent = document.querySelectorAll('#offer .kanban-item').length;
     updateJobStats();
 }
+function updateJobStats() {
+    const interviewCount = document.querySelectorAll('#interview .kanban-item').length;
+    document.getElementById("total-apps").textContent = document.querySelectorAll('#applied .kanban-item').length;
+    document.getElementById("total-interviews").textContent = interviewCount;
+    document.getElementById("total-offers").textContent = document.querySelectorAll('#offer .kanban-item').length;
+
+    // Update sidebar interview count
+    document.getElementById("sidebar-interviews").textContent = interviewCount;
+}
+
