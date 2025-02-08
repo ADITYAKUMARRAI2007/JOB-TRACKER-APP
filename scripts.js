@@ -45,6 +45,7 @@ if (signInButton) {
 }
 
 // ✅ Email/Password Login
+// Email/Password Login
 if (loginButton) {
   loginButton.addEventListener("click", () => {
     const email = document.getElementById("email").value;
@@ -52,16 +53,18 @@ if (loginButton) {
 
     signInWithEmailAndPassword(auth, email, password)
       .then((userCredential) => {
-        localStorage.setItem("user", JSON.stringify(userCredential.user)); // Store user
-        window.location.href = "dashboard.html"; // Redirect to dashboard
+        console.log("Login Success:", userCredential.user);
+        localStorage.setItem("user", JSON.stringify(userCredential.user));
+        window.location.href = "dashboard.html";
       })
       .catch((error) => {
-        errorMessage.textContent = `Login Error: ${error.message}`;
+        console.error("Login Error:", error.code, error.message);
+        alert(`Login Error: ${error.message}`);
       });
   });
 }
 
-// ✅ Email/Password Signup
+// Email/Password Signup
 if (signupButton) {
   signupButton.addEventListener("click", () => {
     const email = document.getElementById("email").value;
@@ -69,13 +72,15 @@ if (signupButton) {
 
     createUserWithEmailAndPassword(auth, email, password)
       .then(() => {
+        console.log("Signup Success:", email);
         alert("Account created! Please log in.");
       })
       .catch((error) => {
-        errorMessage.textContent = `Signup Error: ${error.message}`;
+        console.error("Signup Error:", error.code, error.message);
+        alert(`Signup Error: ${error.message}`);
       });
   });
-}
+});
 
 // ✅ Sign-out event
 if (signOutButton) {
