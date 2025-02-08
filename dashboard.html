@@ -29,16 +29,10 @@
             <p id="user-info" class="text-center text-lg">👋 Welcome, <span id="user-name">Guest</span></p>
             <ul class="flex flex-col gap-4">
                 <li>
-                    <a href="#" class="flex items-center gap-2 text-lg hover:bg-gray-700 p-2 rounded">
-                        <i class="fas fa-calendar-alt"></i> 📞 Scheduled Interviews: <span id="sidebar-interviews">0</span>
+                    <a href="#" id="scheduled-interviews-btn" class="flex items-center gap-2 text-lg hover:bg-gray-700 p-2 rounded">
+                        <i class="fas fa-calendar-check"></i> 📅 Scheduled Interviews (<span id="sidebar-interviews">0</span>)
                     </a>
                 </li>
-                        <li>
-                            <a href="#" id="scheduled-interviews-btn" class="flex items-center gap-2 text-lg hover:bg-gray-700 p-2 rounded">
-                                <i class="fas fa-calendar-check"></i> 📅 Scheduled Interviews
-                            </a>
-                        </li>
-
                 <li>
                     <a href="#" id="logout-btn" class="flex items-center gap-2 text-lg hover:bg-gray-700 p-2 rounded">
                         <i class="fas fa-sign-out-alt"></i> Logout
@@ -94,6 +88,15 @@
                     </div>
                 </div>
             </section>
+
+            <!-- Scheduled Interviews Section -->
+            <section id="scheduled-interviews-section" class="bg-white p-6 rounded-lg shadow-lg mt-6 hidden">
+                <h2 class="text-2xl font-bold mb-4">Scheduled Interviews</h2>
+                <div id="scheduled-interviews-list" class="space-y-4">
+                    <!-- Scheduled Interviews will be dynamically added here -->
+                </div>
+            </section>
+
         </main>
     </div>
 
