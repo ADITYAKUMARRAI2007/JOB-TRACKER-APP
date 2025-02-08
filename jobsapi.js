@@ -69,12 +69,10 @@ async function fetchJobs() {
         
         console.log("API Response:", data); // Log the full API response for debugging
 
-        // Check if there are hits (jobs) in the response
         if (data && data.hits && Array.isArray(data.hits) && data.hits.length > 0) {
             const jobs = data.hits;
-            jobList.innerHTML = '';  // Clear the loading message
+            jobList.innerHTML = '';  
 
-            // Display job listings
             jobs.forEach(job => {
                 const jobItem = document.createElement('li');
                 jobItem.innerHTML = `
@@ -85,13 +83,12 @@ async function fetchJobs() {
                     <a href="${job.website_url}" target="_blank">View Job</a>
                     <button class="apply-btn" data-job-id="${job.id}">Apply</button>
                 `;
-                jobList.appendChild(jobItem); // Add each job to the job-list
+                jobList.appendChild(jobItem); 
                 
-                // Add an event listener to the apply button
                 const applyBtn = jobItem.querySelector('.apply-btn');
                 if (applyBtn) {
                     applyBtn.addEventListener('click', function() {
-                        applyForJob(job);  // Call the function to apply
+                        applyForJob(job); 
                     });
                 }
             });
@@ -106,27 +103,17 @@ async function fetchJobs() {
 
 // Function to handle job application
 function applyForJob(job) {
-    // Add job to Kanban Board (you can modify this logic if needed)
     console.log("Applying for job:", job.title);
-    
-    // Example: Add the job to the Kanban board (or other actions)
     addJobToKanban(job);
-
-    // Optionally, you can show a success message or add other logic for applying
     alert(`You have applied for the job: ${job.title}`);
 }
 
-
-
-
 // Add job to Kanban Board
 function addJobToKanban(job) {
-    // Kanban columns
     const appliedColumn = document.getElementById("applied");
     const interviewColumn = document.getElementById("interview");
     const offerColumn = document.getElementById("offer");
 
-    // Ensure the Kanban columns and 'kanban-items' container exist
     if (!appliedColumn || !interviewColumn || !offerColumn) {
         console.error("Kanban columns not found in the DOM.");
         return;
@@ -141,7 +128,6 @@ function addJobToKanban(job) {
         return;
     }
 
-    // Create a new item for the Kanban board
     const jobItem = document.createElement('div');
     jobItem.classList.add('kanban-item');
     jobItem.innerHTML = `
@@ -152,13 +138,9 @@ function addJobToKanban(job) {
         <button class="move-btn" data-status="offer">Move to Offer</button>
     `;
 
-    // Add item to 'Applied' column by default
     appliedItems.appendChild(jobItem);
-
-    // Increment counts for Kanban board columns
     updateKanbanCounts();
 
-    // Handle moving between stages
     const moveBtns = jobItem.querySelectorAll('.move-btn');
     moveBtns.forEach(btn => {
         btn.addEventListener('click', (e) => {
@@ -178,18 +160,10 @@ function moveJobToColumn(jobItem, status) {
     const interviewItems = interviewColumn.querySelector('.kanban-items');
     const offerItems = offerColumn.querySelector('.kanban-items');
 
-    // Only remove from the column if the job item exists there
-    if (appliedItems.contains(jobItem)) {
-        appliedItems.removeChild(jobItem);
-    }
-    if (interviewItems.contains(jobItem)) {
-        interviewItems.removeChild(jobItem);
-    }
-    if (offerItems.contains(jobItem)) {
-        offerItems.removeChild(jobItem);
-    }
+    if (appliedItems.contains(jobItem)) appliedItems.removeChild(jobItem);
+    if (interviewItems.contains(jobItem)) interviewItems.removeChild(jobItem);
+    if (offerItems.contains(jobItem)) offerItems.removeChild(jobItem);
 
-    // Add job to the selected column
     if (status === "applied") {
         appliedItems.appendChild(jobItem);
     } else if (status === "interview") {
@@ -198,11 +172,17 @@ function moveJobToColumn(jobItem, status) {
         offerItems.appendChild(jobItem);
     }
 
-    // Update the Kanban counts after moving the job
-    updateKanbanCounts();
+    updateKanbanCounts(); 
 }
 
-// Update Kanban board statistics (count of jobs in each stage)
+// Function to update job stats dynamically
+function updateJobStats() {
+    document.getElementById("total-apps").textContent = document.querySelectorAll('#applied .kanban-item').length;
+    document.getElementById("total-interviews").textContent = document.querySelectorAll('#interview .kanban-item').length;
+    document.getElementById("total-offers").textContent = document.querySelectorAll('#offer .kanban-item').length;
+}
+
+// Modify updateKanbanCounts to also update job stats
 function updateKanbanCounts() {
     const appliedCount = document.getElementById("applied-count");
     const interviewCount = document.getElementById("interview-count");
@@ -211,4 +191,6 @@ function updateKanbanCounts() {
     appliedCount.textContent = document.querySelectorAll('#applied .kanban-item').length;
     interviewCount.textContent = document.querySelectorAll('#interview .kanban-item').length;
     offerCount.textContent = document.querySelectorAll('#offer .kanban-item').length;
+
+    updateJobStats(); // Ensures job stats update when Kanban board updates
 }
