@@ -24,6 +24,7 @@ document.addEventListener("DOMContentLoaded", () => {
 
 const API_KEY = "292b9e5d13655f0e6e05600ccbfbe4ac8fc38ab9834526fbb19166310a556fc2";
 
+
 // Fetch job postings
 async function fetchJobs() {
     const jobList = document.getElementById("job-list");
@@ -165,6 +166,20 @@ function displayScheduledInterviews() {
         });
     });
 }
+function updateJobStats() {
+    const totalApps = document.getElementById("total-apps");
+    const totalInterviews = document.getElementById("total-interviews");
+    const totalOffers = document.getElementById("total-offers");
+
+    const appliedCount = document.querySelectorAll("#applied .kanban-item").length;
+    const interviewCount = document.querySelectorAll("#interview .kanban-item").length;
+    const offerCount = document.querySelectorAll("#offer .kanban-item").length;
+
+    if (totalApps) totalApps.textContent = appliedCount;
+    if (totalInterviews) totalInterviews.textContent = interviewCount;
+    if (totalOffers) totalOffers.textContent = offerCount;
+}
+
 
 // Redirect to Google Calendar
 function redirectToGoogleCalendar(job) {
