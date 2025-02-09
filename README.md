@@ -15,7 +15,6 @@ Job Tracker is a **feature-rich web application** designed to streamline job app
 ✅ **Kanban Board** – Organize applications through different stages (`dashboard.html`).  
 ✅ **Job Search Integration** – Fetch jobs dynamically from external APIs (`fetch.js`).  
 ✅ **Interview Scheduling** – Sync interviews with Google Calendar (`jobsapi.js`).  
-✅ **Analytics Dashboard** – Monitor job stats with `Chart.js`.  
 ✅ **Dark Mode Support** – Stylish UI with theme switching (`stylesdash.css`).  
 ✅ **Error Handling & Validation** – Ensures smooth user experience.  
 ✅ **Logout Functionality** – Securely log out & clear session data.  
@@ -45,7 +44,7 @@ Job Tracker is a **feature-rich web application** designed to streamline job app
 
 ### 🔹 **Job Search API** (`fetch.js`)
 - **Functionality:** Fetches job listings dynamically.
-- **API Endpoint:** `POST https://theirstack.p.rapidapi.com/v1/jobs/search`
+- **API Endpoint:** `POST https://api.apijobs.dev/v1/job/search`
 - **Example Response:**
 ```json
 {
