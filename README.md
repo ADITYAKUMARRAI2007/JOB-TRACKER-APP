@@ -1,6 +1,6 @@
 
 <p align="center">
-  <img src="assets/logo.webp" alt="Job Tracker Logo" width="120">
+  <img src="logo.webp" alt="Job Tracker Logo" width="120">
 </p>
 
 # Job Tracker App 🚀
