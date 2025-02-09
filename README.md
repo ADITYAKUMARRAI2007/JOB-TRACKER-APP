@@ -11,11 +11,6 @@ Job Tracker is a **feature-rich web application** designed to streamline job app
   <img src="assets/logo.webp" alt="Job Tracker Logo" width="150">
 </p>
 
-<h1 align="center">📌 Job Tracker App 🚀</h1>
-
-<p align="center">
-  A powerful web application to efficiently track job applications, schedule interviews, and analyze job search progress.
-</p>
 
 ---
 
