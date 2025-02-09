@@ -17,23 +17,16 @@ const firebaseConfig = {
 const app = initializeApp(firebaseConfig);
 const auth = getAuth(app);
 const provider = new GoogleAuthProvider();
-
 const signInButton = document.getElementById("google-signin-btn");
-const signOutButton = document.getElementById("signout-btn");
 const loginButton = document.getElementById("login-btn");
 const signupButton = document.getElementById("signup-btn");
-const resetPasswordButton = document.getElementById("reset-password-btn");
-const userInfoDisplay = document.getElementById("user-info");
 const errorMessage = document.getElementById("error-message");
-
-// Function to display error messages
 const showError = (message) => {
   if (errorMessage) {
     errorMessage.textContent = `Error: ${message}`;
   }
 };
 
-// Google Sign-in
 if (signInButton) {
   signInButton.addEventListener("click", async () => {
     try {
@@ -47,7 +40,6 @@ if (signInButton) {
   });
 }
 
-// Email/Password Login
 if (loginButton) {
   loginButton.addEventListener("click", async () => {
     const email = document.getElementById("email").value.trim();
@@ -69,7 +61,6 @@ if (loginButton) {
   });
 }
 
-// Email/Password Signup
 if (signupButton) {
   signupButton.addEventListener("click", async () => {
     const email = document.getElementById("email").value.trim();
@@ -90,7 +81,6 @@ if (signupButton) {
   });
 }
 
-// Password Reset
 if (resetPasswordButton) {
   resetPasswordButton.addEventListener("click", async () => {
     const email = document.getElementById("email").value.trim();
@@ -109,8 +99,6 @@ if (resetPasswordButton) {
     }
   });
 }
-
-// Logout
 if (signOutButton) {
   signOutButton.addEventListener("click", async () => {
     try {
@@ -124,7 +112,6 @@ if (signOutButton) {
   });
 }
 
-// Monitor Authentication State
 onAuthStateChanged(auth, (user) => {
   if (user) {
     localStorage.setItem("user", JSON.stringify(user));
