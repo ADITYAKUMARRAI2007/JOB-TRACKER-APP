@@ -10,7 +10,7 @@ document.addEventListener("DOMContentLoaded", () => {
         });
     }
 
-    // Handle Scheduled Interviews button click
+ 
     const scheduledInterviewsBtn = document.getElementById("scheduled-interviews-btn");
     if (scheduledInterviewsBtn) {
         scheduledInterviewsBtn.addEventListener("click", () => {
@@ -105,14 +105,14 @@ function moveJobToColumn(jobItem, status, job) {
     }
 }
 
-// Store scheduled interviews in local storage
+
 function scheduleGoogleCalendarInterview(job) {
     const title = `Interview for ${job.title}`;
     const now = new Date();
     const formattedTime = now.toISOString().replace(/-|:|\.\d+/g, "");
     const googleCalendarUrl = `https://www.google.com/calendar/render?action=TEMPLATE&text=${encodeURIComponent(title)}&dates=${formattedTime}/${formattedTime}`;
 
-    // Store interview details in localStorage
+    
     const interviews = JSON.parse(localStorage.getItem("scheduledInterviews")) || [];
     interviews.push({ title: job.title, company: job.company_name, date: now.toDateString() });
     localStorage.setItem("scheduledInterviews", JSON.stringify(interviews));
@@ -120,12 +120,12 @@ function scheduleGoogleCalendarInterview(job) {
     window.location.href = googleCalendarUrl;
 }
 
-// Show Scheduled Interviews
+
 function showScheduledInterviews() {
     const scheduledSection = document.getElementById("scheduled-interviews-section");
     const scheduledList = document.getElementById("scheduled-interviews-list");
 
-    // Clear previous content
+
     scheduledList.innerHTML = "";
 
     const interviews = JSON.parse(localStorage.getItem("scheduledInterviews")) || [];
@@ -146,22 +146,22 @@ function showScheduledInterviews() {
         });
     }
 
-    // Show the section
+   
     scheduledSection.classList.remove("hidden");
 }
 
-// Update the Job Statistics
+
 function updateJobStats() {
     const interviewCount = document.querySelectorAll('#interview .kanban-item').length;
     document.getElementById("total-apps").textContent = document.querySelectorAll('#applied .kanban-item').length;
     document.getElementById("total-interviews").textContent = interviewCount;
     document.getElementById("total-offers").textContent = document.querySelectorAll('#offer .kanban-item').length;
 
-    // Update sidebar interview count
+
     document.getElementById("sidebar-interviews").textContent = interviewCount;
 }
 
-// Update Kanban Counts
+
 function updateKanbanCounts() {
     document.getElementById("applied-count").textContent = document.querySelectorAll('#applied .kanban-item').length;
     document.getElementById("interview-count").textContent = document.querySelectorAll('#interview .kanban-item').length;
@@ -169,7 +169,7 @@ function updateKanbanCounts() {
     updateJobStats();
 }
 document.addEventListener("DOMContentLoaded", () => {
-    localStorage.removeItem("scheduledInterviews"); // Clears stored interviews on refresh
+    localStorage.removeItem("scheduledInterviews"); 
     updateJobStats();
     fetchJobs();
 });
