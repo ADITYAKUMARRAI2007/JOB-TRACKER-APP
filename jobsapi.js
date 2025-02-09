@@ -18,6 +18,7 @@ document.addEventListener("DOMContentLoaded", () => {
         });
     }
 
+    // 🔍 Job Search Filtering (Added Feature)
     const searchInput = document.getElementById("job-search");
     if (searchInput) {
         searchInput.addEventListener("input", filterJobs);
@@ -72,7 +73,7 @@ function addJobToList(job) {
     jobItem.querySelector(".apply-btn").addEventListener("click", () => applyForJob(job));
 }
 
-
+// 🔍 Function to Filter Jobs in Real-Time (Added Feature)
 function filterJobs() {
     const query = document.getElementById("job-search").value.toLowerCase();
     const jobCards = document.querySelectorAll("#job-list .job-item");
