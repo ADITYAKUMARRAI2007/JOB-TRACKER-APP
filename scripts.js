@@ -1,5 +1,8 @@
 import { initializeApp } from "https://www.gstatic.com/firebasejs/9.6.1/firebase-app.js";
-import { getAuth, GoogleAuthProvider, signInWithPopup, signOut, onAuthStateChanged, createUserWithEmailAndPassword, signInWithEmailAndPassword, sendPasswordResetEmail } from "https://www.gstatic.com/firebasejs/9.6.1/firebase-auth.js";
+import { 
+  getAuth, GoogleAuthProvider, signInWithPopup, signOut, onAuthStateChanged, 
+  createUserWithEmailAndPassword, signInWithEmailAndPassword, sendPasswordResetEmail 
+} from "https://www.gstatic.com/firebasejs/9.6.1/firebase-auth.js";
 
 const firebaseConfig = {
   apiKey: "AIzaSyAVnIv8VamXAhfKxZVjYNcS7l88h2Q1NaM",
@@ -23,68 +26,105 @@ const resetPasswordButton = document.getElementById("reset-password-btn");
 const userInfoDisplay = document.getElementById("user-info");
 const errorMessage = document.getElementById("error-message");
 
+// Function to display error messages
+const showError = (message) => {
+  if (errorMessage) {
+    errorMessage.textContent = `Error: ${message}`;
+  }
+};
+
+// Google Sign-in
 if (signInButton) {
-  signInButton.addEventListener("click", () => {
-    signInWithPopup(auth, provider).then((result) => {
-      const user = result.user;
-      localStorage.setItem("user", JSON.stringify(user));
+  signInButton.addEventListener("click", async () => {
+    try {
+      const result = await signInWithPopup(auth, provider);
+      localStorage.setItem("user", JSON.stringify(result.user));
       window.location.href = "dashboard.html";
-    }).catch((error) => {
-      errorMessage.textContent = `Error: ${error.message}`;
-    });
+    } catch (error) {
+      showError(error.message);
+      console.error("Google Sign-in Error:", error.code, error.message);
+    }
   });
 }
 
+// Email/Password Login
 if (loginButton) {
-  loginButton.addEventListener("click", () => {
-    const email = document.getElementById("email").value;
-    const password = document.getElementById("password").value;
-    signInWithEmailAndPassword(auth, email, password).then((userCredential) => {
-      console.log("Login Success:", userCredential.user);
+  loginButton.addEventListener("click", async () => {
+    const email = document.getElementById("email").value.trim();
+    const password = document.getElementById("password").value.trim();
+
+    if (!email || !password) {
+      showError("Please enter both email and password.");
+      return;
+    }
+
+    try {
+      const userCredential = await signInWithEmailAndPassword(auth, email, password);
       localStorage.setItem("user", JSON.stringify(userCredential.user));
       window.location.href = "dashboard.html";
-    }).catch((error) => {
+    } catch (error) {
+      showError(error.message);
       console.error("Login Error:", error.code, error.message);
-      alert(`Login Error: ${error.code} - ${error.message}`);
-    });
+    }
   });
 }
 
+// Email/Password Signup
 if (signupButton) {
-  signupButton.addEventListener("click", () => {
-    const email = document.getElementById("email").value;
-    const password = document.getElementById("password").value;
-    createUserWithEmailAndPassword(auth, email, password).then(() => {
+  signupButton.addEventListener("click", async () => {
+    const email = document.getElementById("email").value.trim();
+    const password = document.getElementById("password").value.trim();
+
+    if (!email || !password) {
+      showError("Please enter both email and password.");
+      return;
+    }
+
+    try {
+      await createUserWithEmailAndPassword(auth, email, password);
       alert("Account created! Please log in.");
-    }).catch((error) => {
-      errorMessage.textContent = `Signup Error: ${error.message}`;
-    });
+    } catch (error) {
+      showError(error.message);
+      console.error("Signup Error:", error.code, error.message);
+    }
   });
 }
 
+// Password Reset
 if (resetPasswordButton) {
-  resetPasswordButton.addEventListener("click", () => {
-    const email = document.getElementById("email").value;
-    sendPasswordResetEmail(auth, email).then(() => {
+  resetPasswordButton.addEventListener("click", async () => {
+    const email = document.getElementById("email").value.trim();
+
+    if (!email) {
+      showError("Please enter your email to reset the password.");
+      return;
+    }
+
+    try {
+      await sendPasswordResetEmail(auth, email);
       alert("Password reset email sent. Check your inbox.");
-    }).catch((error) => {
-      console.error("Reset Error:", error.code, error.message);
-      alert(`Error: ${error.message}`);
-    });
+    } catch (error) {
+      showError(error.message);
+      console.error("Reset Password Error:", error.code, error.message);
+    }
   });
 }
 
+// Logout
 if (signOutButton) {
-  signOutButton.addEventListener("click", () => {
-    signOut(auth).then(() => {
+  signOutButton.addEventListener("click", async () => {
+    try {
+      await signOut(auth);
       localStorage.removeItem("user");
       window.location.href = "index.html";
-    }).catch((error) => {
-      errorMessage.textContent = `Error: ${error.message}`;
-    });
+    } catch (error) {
+      showError(error.message);
+      console.error("Logout Error:", error.code, error.message);
+    }
   });
 }
 
+// Monitor Authentication State
 onAuthStateChanged(auth, (user) => {
   if (user) {
     localStorage.setItem("user", JSON.stringify(user));
