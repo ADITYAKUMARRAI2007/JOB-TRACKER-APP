@@ -1,8 +1,8 @@
-// Import Firebase SDK components
+
 import { initializeApp } from "firebase/app";
 import { getAuth, GoogleAuthProvider, signInWithPopup, signOut, onAuthStateChanged } from "firebase/auth";
 
-// Your Firebase configuration
+
 const firebaseConfig = {
   apiKey: "AIzaSyAVnIv8VamXAhfKxZVjYNcS7l88h2Q1NaM",
   authDomain: "job-tracker-app-60030.firebaseapp.com",
