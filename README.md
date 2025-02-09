@@ -7,10 +7,6 @@
 
 ## Overview
 Job Tracker is a **feature-rich web application** designed to streamline job application tracking, **schedule interviews**, and manage job search progress effectively. The platform offers a **Kanban board**, **Google Calendar integration**, **job listing APIs**, and **Firebase authentication** for a seamless user experience.
-<p align="center">
-  <img src="assets/logo.webp" alt="Job Tracker Logo" width="150">
-</p>
-
 
 ---
 
