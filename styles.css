@@ -6,12 +6,12 @@
   font-family: 'Poppins', sans-serif; 
 }
 .logo {
-  width: 70px; /* Adjust size as needed */
+  width: 85px; /* Adjust size as needed */
   height: auto; /* Maintains aspect ratio */
   display: block;
-  margin-bottom: 5px; /* Adds space below */
-  margin-left: 5px; /* Aligns to the left */
-  padding: 5px; /* Optional: Adds inner spacing */
+  margin-bottom: 10px; /* Adds space below */
+  margin-left: 3px; /* Aligns to the left */
+  padding: 4px; /* Optional: Adds inner spacing */
   box-sizing: border-box; /* Ensures padding and border don’t affect width */
 }
 
